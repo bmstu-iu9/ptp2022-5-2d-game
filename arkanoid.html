@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Арканоид</title>
+  <div> </div>
+  <style>    
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+    }    
+    body {
+      background: black;
+      display: flex;
+      align-items: center;
+    }
+  </style>
+</head>
+
+<body>
+    <table align="left" width="715" border="0"
+    align="center" cellspacing="0" cellpadding="5">
+ <tr bgcolor="black">
+   <td colspan="2" width="30%">
+  <canvas 
+  width="400" height="480" id="game">
+  </canvas>
+  </td>
+ </tr>
+</table>
+  <script>
+
+    // добавлены основы: холст, переменные и стены
+
+    // ОПИСАНИЕ ПЕРЕМЕННЫХ
+
+    var canvas = document.getElementById('game');
+    var context = canvas.getContext('2d');
+
+
+
+
+
+    // ОПИСАНИЕ ХАРАКТЕРИСТИК КИРПИЧЕЙ И СТЕН
+
+    const brickGap = 2; // пространство между двумя соседними кирпичами
+    var brickWidth = 25; // длина кирпича
+    const brickHeight = 12; // высота кирпича
+    var wallSize = 12; // толщина стен
+
+
+
+    // запускаем игру  
+    requestAnimationFrame(game);
+
+
+
+
+
+
+
+
+
+
+// САМА ИГРА
+
+function game() {
+      requestAnimationFrame(game);
+
+      // на каждом кадре всё стираем 
+      context.clearRect(0, 0, canvas.width, canvas.height);
+
+
+   
+      // рисуем стены
+      context.fillStyle = 'lightgrey';
+      context.fillRect(0, 0, canvas.width, wallSize);
+      context.fillRect(0, 0, wallSize, canvas.height);
+      context.fillRect(canvas.width - wallSize, 0, wallSize, canvas.height);
+    }
+
+  </script>
+</body>
+</html>
