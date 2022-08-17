@@ -31,7 +31,7 @@
 </table>
   <script>
 
-    // добавлены основы: холст, переменные и стены
+    // добавлена платформа, возможность её двигать и функция для определения коллизии
 
     // ОПИСАНИЕ ПЕРЕМЕННЫХ
 
@@ -49,7 +49,60 @@
     const brickHeight = 12; // высота кирпича
     var wallSize = 12; // толщина стен
 
+    // платформа
+    var paddle = {
+      x: canvas.width / 2 - brickWidth,
+      y: 440,
+      width: 50,
+      height: brickHeight,
+      dx: 0,
+      dy: 0
+    };
 
+
+
+
+
+    // проверка двух объектов на колллизию
+    function collides(obj1, obj2) {
+      return obj1.x < obj2.x + obj2.width &&
+        obj1.x + obj1.width > obj2.x &&
+        obj1.y < obj2.y + obj2.height &&
+        obj1.y + obj1.height > obj2.y;
+    }
+
+
+
+    // отслеживаем нажатия игрока на клавиши
+    document.addEventListener('keydown', function(e) {
+
+      // стрелка влево
+      if (e.which === 37) { 
+        paddle.dx = -3;
+      }
+      // стрелка вправо
+      if (e.which === 39) {
+        paddle.dx = 3;
+      }
+      // стрелка вверх
+      if (e.which === 38) {
+        paddle.dy = -3;
+      }
+      // стрелка вниз
+      if (e.which === 40) {
+        paddle.dy = 3;
+      }
+    });
+
+    // останавливаем платформу, если клавиши не нажаты
+    document.addEventListener('keyup', function(e) {
+      if (e.which === 37 || e.which === 39) {
+        paddle.dx = 0;
+      }
+      if (e.which === 38 || e.which === 40) {
+        paddle.dy = 0;
+      }
+    });
 
     // запускаем игру  
     requestAnimationFrame(game);
@@ -78,6 +131,27 @@ function game() {
       context.fillRect(0, 0, canvas.width, wallSize);
       context.fillRect(0, 0, wallSize, canvas.height);
       context.fillRect(canvas.width - wallSize, 0, wallSize, canvas.height);
+
+
+
+
+
+    // РАБОТА С ПЛАТФОРМОЙ
+
+     // рисуем платформу
+     context.fillStyle = 'cyan';
+      context.fillRect(paddle.x, paddle.y, paddle.width, paddle.height);
+
+      // двигаем платформу с нужной скоростью 
+      paddle.x += paddle.dx;
+      paddle.y += paddle.dy;
+
+      // смотрим, что платформа не уезжает за боковые стенки
+      if (paddle.x < wallSize) {
+        paddle.x = wallSize
+      } else if (paddle.x + paddle.width > canvas.width - wallSize) {
+        paddle.x = canvas.width - wallSize - paddle.width;
+      }
     }
 
   </script>
