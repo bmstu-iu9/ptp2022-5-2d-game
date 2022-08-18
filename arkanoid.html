@@ -21,6 +21,24 @@
 <body>
     <table align="left" width="715" border="0"
     align="center" cellspacing="0" cellpadding="5">
+    <tr bgcolor="black">
+        <td height="10">
+            <font
+                size="8"color="white" face = "">
+                Правила игры:
+            </font>
+        </td>
+       </tr>
+           <td>
+                <p>
+                    <font
+                        size="4"color="white" face = "">
+                        1) Ваша цель - пройти уровень, разбив все блоки <br>
+                    </font>
+                </p>
+           </td>
+        
+           
  <tr bgcolor="black">
    <td colspan="2" width="30%">
   <canvas 
@@ -31,12 +49,46 @@
 </table>
   <script>
 
-    // добавлен шарик, его коллизия со стенами и платформой, возможность запускать шар
+    // добавлен первый уровень, возможность проиграть и правила
 
     // ОПИСАНИЕ ПЕРЕМЕННЫХ
 
     var canvas = document.getElementById('game');
     var context = canvas.getContext('2d');
+
+
+
+
+
+    // ОПИСАНИЕ УРОВНЕЙ 
+
+    var level1 = [ // первый уровень (радуга)
+      [],
+      [],
+      [],
+      [],
+      [],
+      [],
+      ['R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R'],
+      ['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O'],
+      ['Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y'],
+      ['G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G'],
+      ['LG', 'LG', 'LG', 'LG', 'LG', 'LG', 'LG', 'LG', 'LG', 'LG', 'LG', 'LG', 'LG', 'LG'],
+      ['B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B'],
+      ['P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P']
+    ];
+
+
+    // для создания кирпичей по массивам выше
+    const colorMap = {
+      'R': 'red',
+      'O': 'orange',
+      'G': 'green',
+      'Y': 'yellow',
+      'LG': 'dodgerblue',
+      'B': 'blue',
+      'P': 'purple'
+    };
 
 
 
@@ -69,6 +121,22 @@
       dx: 0,
       dy: 0
     };
+
+    var bricks = []; // массив кирпичей
+
+    // строим первый уровень
+    for (let row = 0; row < level1.length; row++) {
+      for (let col = 0; col < level1[row].length; col++) {
+        const colorCode = level1[row][col];
+        bricks.push({
+          x: wallSize + (brickWidth + brickGap) * col,
+          y: wallSize + (brickHeight + brickGap) * row,
+          color: colorMap[colorCode],
+          width: brickWidth,
+          height: brickHeight
+        });
+    }
+    }
 
 
 
@@ -140,6 +208,43 @@ function game() {
       // на каждом кадре всё стираем 
       context.clearRect(0, 0, canvas.width, canvas.height);
 
+    
+
+
+
+      // начинаем заново уровень
+      if (ball.y > paddle.y + 75) {
+
+
+        // рестарт первого уровня (строим его как и раньше)
+        // обнуляем массив кирпичей
+        bricks = [];
+
+        for (let row = 0; row < level1.length; row++) {
+          for (let col = 0; col < level1[row].length; col++) {
+
+            if (level1[row][col] != 'E') {
+              const colorCode = level1[row][col];
+        bricks.push({
+          x: wallSize + (brickWidth + brickGap) * col,
+          y: wallSize + (brickHeight + brickGap) * row,
+          color: colorMap[colorCode],
+          width: brickWidth,
+          height: brickHeight
+        });
+    }
+          }
+        }
+
+      // телепортируем платформу в центр
+      paddle.x = canvas.width / 2 - brickWidth;
+      paddle.y = 440;
+
+    // телепортируем шарик к платформе
+    ball.dx = 0;
+      ball.dy = 0;
+}
+
 
    
       // рисуем стены
@@ -148,6 +253,11 @@ function game() {
       context.fillRect(0, 0, wallSize, canvas.height);
       context.fillRect(canvas.width - wallSize, 0, wallSize, canvas.height);
 
+      // рисуем кирпичи
+      bricks.forEach(function(brick) {
+        context.fillStyle = brick.color;
+        context.fillRect(brick.x, brick.y, brick.width, brick.height);
+      });
 
 
 
