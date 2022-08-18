@@ -34,7 +34,8 @@
                     <font
                         size="4"color="white" face = "">
 
-                        1) Ваша цель - пройти два уровня, разбив все блоки на каждом из них <br>
+                        1) Ваша цель - пройти три уровня, разбив все блоки на каждом из них <br>
+
                         2) Новый уровень - новый чекпоинт <br>
 
                     </font>
@@ -52,13 +53,14 @@
 </table>
   <script>
 
-    // добавлен второй уровень и переход между уровнями
+    // добавлен третий уровень
 
     // ОПИСАНИЕ ПЕРЕМЕННЫХ
 
     var canvas = document.getElementById('game');
     var context = canvas.getContext('2d');
-    var curlevel = 1; // уровень, который мы проходим в данный момент 
+
+    var curlevel = 1; // уровень, который мы проходим в данный момент
 
     var bottom = 0; // низ уровня для ограничения движения платформы
 
@@ -85,8 +87,33 @@
     ];
 
 
+    var level3 = [ // третий уровень (смайлик)
+        [],
+        [],
+        [],
+        ['E', 'E', 'E', 'E', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'E', 'E', 'E', 'E'],
+        ['E', 'E', 'E', 'E', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'E', 'E', 'E', 'E'],
+        ['E', 'E', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'E', 'E'],
+        ['E', 'E', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'E', 'E'],
+        ['C', 'C', 'C', 'C', 'E', 'E', 'C', 'C', 'C', 'C', 'E', 'E', 'C', 'C', 'C', 'C'],
+        ['C', 'C', 'C', 'C', 'E', 'E', 'C', 'C', 'C', 'C', 'E', 'E', 'C', 'C', 'C', 'C'],
+        ['C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C'],
+        ['C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C'],
+        ['C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C'],
+        ['C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C'],
+        ['C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C'],
+        ['C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C'],
+        ['C', 'C', 'C', 'C', 'GR', 'GR', 'C', 'C', 'C', 'C', 'GR', 'GR', 'C', 'C', 'C', 'C'],
+        ['C', 'C', 'C', 'C', 'GR', 'GR', 'C', 'C', 'C', 'C', 'GR', 'GR', 'C', 'C', 'C', 'C'],
+        ['E', 'E', 'C', 'C', 'C', 'C', 'GR', 'GR', 'GR', 'GR', 'C', 'C', 'C', 'C', 'E', 'E'],
+        ['E', 'E', 'C', 'C', 'C', 'C', 'GR', 'GR', 'GR', 'GR', 'C', 'C', 'C', 'C', 'E', 'E'],
+        ['E', 'E', 'E', 'E', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'E', 'E', 'E', 'E'],
+        ['E', 'E', 'E', 'E', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'E', 'E', 'E', 'E']
+    ];
+
     // для создания кирпичей по массивам выше
     const colorMap = {
+      'C': 'coral',
       'R': 'red',
       'O': 'orange',
       'G': 'green',
@@ -273,6 +300,28 @@ function game() {
             }
           }
             
+        } else if (curlevel == 2) { // переход на третий
+
+          // подгоянем статы для третьего уровня
+          curlevel = 3;
+          brickWidth = 20;
+          wallSize = 25;
+
+            for (let row = 0; row < level3.length; row++) {
+            for (let col = 0; col < level3[row].length; col++) {
+              if (level3[row][col] != 'E') {
+        const colorCode = level3[row][col];
+        bricks.push({
+          x: wallSize + (brickWidth + brickGap) * col,
+          y: wallSize + (brickHeight + brickGap) * row,
+          color: colorMap[colorCode],
+          width: brickWidth,
+          height: brickHeight
+        });
+              }
+            }
+          }
+        
         }
 
         // телепортируем платформу в центр
@@ -342,6 +391,28 @@ function game() {
           }
       }
 
+
+      if (curlevel == 3) { // рестарт третьего уровня (строим его как и раньше)
+       
+        // обнуляем массив кирпичей
+        bricks = [];
+
+        for (let row = 0; row < level3.length; row++) {
+            for (let col = 0; col < level3[row].length; col++) {
+
+                if (level3[row][col] != 'E') {
+          const colorCode = level3[row][col];
+          bricks.push({
+          x: wallSize + (brickWidth + brickGap) * col,
+          y: wallSize + (brickHeight + brickGap) * row,
+          color: colorMap[colorCode],
+          width: brickWidth,
+          height: brickHeight
+        });
+              }
+            }
+          }
+      }
 
       // телепортируем платформу в центр
       paddle.x = canvas.width / 2 - brickWidth;
