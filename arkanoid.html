@@ -33,7 +33,8 @@
                 <p>
                     <font
                         size="4"color="white" face = "">
-                        1) Ваша цель - пройти уровень, разбив все блоки <br>
+                        1) Ваша цель - пройти один уровень, разбив все блоки <br>
+
                     </font>
                 </p>
            </td>
@@ -49,12 +50,48 @@
 </table>
   <script>
 
-    // добавлен первый уровень, возможность проиграть и правила
+    // добавлено: колллизия шарика с кирпичами, ограничение движения платформы низом уровня
+
 
     // ОПИСАНИЕ ПЕРЕМЕННЫХ
 
     var canvas = document.getElementById('game');
     var context = canvas.getContext('2d');
+    var bottom = 0; // низ уровня для ограничения движения платформы
+
+
+
+
+
+    // ОПИСАНИЕ УРОВНЕЙ 
+
+    var level1 = [ // первый уровень (радуга)
+      [],
+      [],
+      [],
+      [],
+      [],
+      [],
+      ['R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R'],
+      ['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O'],
+      ['Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y'],
+      ['G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G'],
+      ['LG', 'LG', 'LG', 'LG', 'LG', 'LG', 'LG', 'LG', 'LG', 'LG', 'LG', 'LG', 'LG', 'LG'],
+      ['B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B'],
+      ['P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P']
+    ];
+
+
+    // для создания кирпичей по массивам выше
+    const colorMap = {
+      'R': 'red',
+      'O': 'orange',
+      'G': 'green',
+      'Y': 'yellow',
+      'LG': 'dodgerblue',
+      'B': 'blue',
+      'P': 'purple'
+    };
 
 
 
@@ -136,6 +173,13 @@
           height: brickHeight
         });
     }
+    }
+
+
+
+    // функция для определения случайного числа для распределения бонусных блоков
+    function getRandomInt(max) {
+      return Math.floor(Math.random() * max);
     }
 
 
@@ -278,7 +322,33 @@ function game() {
 
     // двигаем шарик
     ball.x += ball.dx;
-    ball.y += ball.dy;
+      ball.y += ball.dy;
+
+      // проверяем каждый кирпич на касание его шариком
+      bottom = 0;
+      for (let i = 0; i < bricks.length; i++) {
+        const brick = bricks[i];
+
+        // параллельно находим самый низ уровня
+        if (brick.y > bottom) {
+            bottom = brick.y;
+        }
+        if (collides(ball, brick)) {    
+          // убираем кирпич из массива
+          bricks.splice(i, 1);
+          // если шарик коснулся кирпича сверху или снизу — меняем направление движения шарика по оси игрек
+          if (ball.y + ball.height - ball.speed <= brick.y ||
+            ball.y >= brick.y + brick.height - ball.speed) {
+            ball.dy *= -1;
+          }
+          // в противном случае меняем направление движения шарика по оси икс
+          else {
+            ball.dx *= -1;
+          }
+          // как нашли касание — сразу выходим из цикла проверки
+          break;
+        }
+      }
 
 
       // проверка шарика на коллизию с боковыми стенками
@@ -316,6 +386,14 @@ function game() {
       } else if (paddle.x + paddle.width > canvas.width - wallSize) {
         paddle.x = canvas.width - wallSize - paddle.width;
       }
+
+      // смотрим, что платформа не уезжает выше нижнего кирпича
+      if (paddle.y < bottom + 2 * paddle.height) {
+        paddle.y = bottom + 2 * paddle.height
+      } else if (paddle.y > 450) {
+        paddle.y = 450;
+      }
+
 
       // проверка коллизии шарика с платформой
       if (collides(ball, paddle)) {
