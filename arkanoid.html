@@ -33,8 +33,10 @@
                 <p>
                     <font
                         size="4"color="white" face = "">
+
                         1) Ваша цель - пройти два уровня, разбив все блоки на каждом из них <br>
                         2) Новый уровень - новый чекпоинт <br>
+
                     </font>
                 </p>
            </td>
@@ -57,6 +59,7 @@
     var canvas = document.getElementById('game');
     var context = canvas.getContext('2d');
     var curlevel = 1; // уровень, который мы проходим в данный момент 
+
     var bottom = 0; // низ уровня для ограничения движения платформы
 
 
@@ -81,26 +84,6 @@
       ['P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P']
     ];
 
-    var level2 = [ // второй уровень (space invaders)
-      [],
-      [],
-      ['E', 'E', 'E', 'Y', 'E', 'E', 'E', 'E', 'E', 'Y', 'E', 'E', 'E'],
-      ['E', 'E', 'E', 'Y', 'E', 'E', 'E', 'E', 'E', 'Y', 'E', 'E', 'E'],
-      ['E', 'E', 'E', 'E', 'Y', 'E', 'E', 'E', 'Y', 'E', 'E', 'E', 'E'],
-      ['E', 'E', 'E', 'E', 'Y', 'E', 'E', 'E', 'Y', 'E', 'E', 'E', 'E'],
-      ['E', 'E', 'E', 'GR', 'GR', 'GR', 'GR', 'GR', 'GR', 'GR', 'E', 'E', 'E'],
-      ['E', 'E', 'E', 'GR', 'GR', 'GR', 'GR', 'GR', 'GR', 'GR', 'E', 'E', 'E'],
-      ['E', 'E', 'GR', 'GR', 'R', 'GR', 'GR', 'GR', 'R', 'GR', 'GR', 'E', 'E'],
-      ['E', 'E', 'GR', 'GR', 'R', 'GR', 'GR', 'GR', 'R', 'GR', 'GR', 'E', 'E'],
-      ['E', 'GR', 'GR', 'GR', 'GR', 'GR', 'GR', 'GR', 'GR', 'GR', 'GR', 'GR', 'E'],
-      ['E', 'GR', 'GR', 'GR', 'GR', 'GR', 'GR', 'GR', 'GR', 'GR', 'GR', 'GR', 'E'],
-      ['E', 'GR', 'GR', 'GR', 'GR', 'GR', 'GR', 'GR', 'GR', 'GR', 'GR', 'GR', 'E'],
-      ['E', 'GR', 'E', 'GR', 'GR', 'GR', 'GR', 'GR', 'GR', 'GR', 'E', 'GR', 'E'],
-      ['E', 'GR', 'E', 'GR', 'E', 'E', 'E', 'E', 'E', 'GR', 'E', 'GR', 'E'],
-      ['E', 'GR', 'E', 'GR', 'E', 'E', 'E', 'E', 'E', 'GR', 'E', 'GR', 'E'],
-      ['E', 'E', 'E', 'E', 'GR', 'GR', 'E', 'GR', 'GR', 'E', 'E', 'E', 'E'],
-      ['E', 'E', 'E', 'E', 'GR', 'GR', 'E', 'GR', 'GR', 'E', 'E', 'E', 'E']
-    ];
 
     // для создания кирпичей по массивам выше
     const colorMap = {
@@ -108,7 +91,9 @@
       'O': 'orange',
       'G': 'green',
       'Y': 'yellow',
+
       'GR': 'gray',
+
       'LG': 'dodgerblue',
       'B': 'blue',
       'P': 'purple'
@@ -150,6 +135,7 @@
 
     // строим первый уровень
     if (curlevel == 1) {
+
     for (let row = 0; row < level1.length; row++) {
       for (let col = 0; col < level1[row].length; col++) {
         const colorCode = level1[row][col];
@@ -162,7 +148,9 @@
         });
     }
     }
+
 }
+
 
 
 
@@ -172,6 +160,24 @@
     }
 
 
+
+      // если шарик не запущен — запускаем его на пробел или enter
+      if (ball.dx === 0 && ball.dy === 0 && (e.which === 32 || e.which === 13)) {
+        ball.x = paddle.x + paddle.width / 2;
+        ball.dx = paddle.dx;
+        ball.dy = -ball.speed;
+      }
+    });
+
+    // останавливаем платформу, если клавиши не нажаты
+    document.addEventListener('keyup', function(e) {
+      if (e.which === 37 || e.which === 39) {
+        paddle.dx = 0;
+      }
+      if (e.which === 38 || e.which === 40) {
+        paddle.dy = 0;
+      }
+    });
 
     // проверка двух объектов на колллизию
     function collides(obj1, obj2) {
@@ -289,8 +295,10 @@ function game() {
       if (ball.y > paddle.y + 75) {
 
 
+
         if (curlevel == 1) { // рестарт первого уровня (строим его как и раньше)
        
+
         // обнуляем массив кирпичей
         bricks = [];
 
@@ -309,6 +317,7 @@ function game() {
     }
           }
         }
+
       }
 
       if (curlevel == 2) { // рестарт второго уровня (строим его как и раньше)
@@ -332,6 +341,7 @@ function game() {
             }
           }
       }
+
 
       // телепортируем платформу в центр
       paddle.x = canvas.width / 2 - brickWidth;
@@ -403,6 +413,7 @@ function game() {
         }
       }
 
+
       // проверка шарика на коллизию с боковыми стенками
       if (ball.x < wallSize) {
         ball.x = wallSize;
@@ -445,6 +456,7 @@ function game() {
       } else if (paddle.y > 450) {
         paddle.y = 450;
       }
+
 
       // проверка коллизии шарика с платформой
       if (collides(ball, paddle)) {
