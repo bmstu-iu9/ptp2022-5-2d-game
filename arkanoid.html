@@ -33,11 +33,8 @@
                 <p>
                     <font
                         size="4"color="white" face = "">
-
-                        1) Ваша цель - пройти три уровня, разбив все блоки на каждом из них <br>
-
+                        1) Ваша цель - пройти четыре уровня, разбив все блоки на каждом из них <br>
                         2) Новый уровень - новый чекпоинт <br>
-
                     </font>
                 </p>
            </td>
@@ -53,15 +50,13 @@
 </table>
   <script>
 
-    // добавлен третий уровень
+    // добавлен четвертый уровень
 
     // ОПИСАНИЕ ПЕРЕМЕННЫХ
 
     var canvas = document.getElementById('game');
     var context = canvas.getContext('2d');
-
     var curlevel = 1; // уровень, который мы проходим в данный момент
-
     var bottom = 0; // низ уровня для ограничения движения платформы
 
 
@@ -86,6 +81,26 @@
       ['P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P']
     ];
 
+    var level2 = [ // второй уровень (space invaders)
+      [],
+      [],
+      ['E', 'E', 'E', 'Y', 'E', 'E', 'E', 'E', 'E', 'Y', 'E', 'E', 'E'],
+      ['E', 'E', 'E', 'Y', 'E', 'E', 'E', 'E', 'E', 'Y', 'E', 'E', 'E'],
+      ['E', 'E', 'E', 'E', 'Y', 'E', 'E', 'E', 'Y', 'E', 'E', 'E', 'E'],
+      ['E', 'E', 'E', 'E', 'Y', 'E', 'E', 'E', 'Y', 'E', 'E', 'E', 'E'],
+      ['E', 'E', 'E', 'GR', 'GR', 'GR', 'GR', 'GR', 'GR', 'GR', 'E', 'E', 'E'],
+      ['E', 'E', 'E', 'GR', 'GR', 'GR', 'GR', 'GR', 'GR', 'GR', 'E', 'E', 'E'],
+      ['E', 'E', 'GR', 'GR', 'R', 'GR', 'GR', 'GR', 'R', 'GR', 'GR', 'E', 'E'],
+      ['E', 'E', 'GR', 'GR', 'R', 'GR', 'GR', 'GR', 'R', 'GR', 'GR', 'E', 'E'],
+      ['E', 'GR', 'GR', 'GR', 'GR', 'GR', 'GR', 'GR', 'GR', 'GR', 'GR', 'GR', 'E'],
+      ['E', 'GR', 'GR', 'GR', 'GR', 'GR', 'GR', 'GR', 'GR', 'GR', 'GR', 'GR', 'E'],
+      ['E', 'GR', 'GR', 'GR', 'GR', 'GR', 'GR', 'GR', 'GR', 'GR', 'GR', 'GR', 'E'],
+      ['E', 'GR', 'E', 'GR', 'GR', 'GR', 'GR', 'GR', 'GR', 'GR', 'E', 'GR', 'E'],
+      ['E', 'GR', 'E', 'GR', 'E', 'E', 'E', 'E', 'E', 'GR', 'E', 'GR', 'E'],
+      ['E', 'GR', 'E', 'GR', 'E', 'E', 'E', 'E', 'E', 'GR', 'E', 'GR', 'E'],
+      ['E', 'E', 'E', 'E', 'GR', 'GR', 'E', 'GR', 'GR', 'E', 'E', 'E', 'E'],
+      ['E', 'E', 'E', 'E', 'GR', 'GR', 'E', 'GR', 'GR', 'E', 'E', 'E', 'E']
+    ];
 
     var level3 = [ // третий уровень (смайлик)
         [],
@@ -111,6 +126,26 @@
         ['E', 'E', 'E', 'E', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'E', 'E', 'E', 'E']
     ];
 
+    var level4 = [ // четвёртый уровень (зонтик)
+
+    [],
+    [],
+    ['E', 'E', 'E', 'E', 'E', 'E', 'GR', 'E', 'E', 'E', 'E', 'E', 'E'],
+    ['E', 'E', 'E', 'B', 'B', 'B', 'GR', 'G', 'G', 'G', 'E', 'E', 'E'],
+    ['E', 'E', 'B', 'B', 'B', 'R', 'R', 'R', 'G', 'G', 'G', 'E', 'E'],
+    ['E', 'E', 'B', 'B', 'R', 'R', 'R', 'R', 'R', 'G', 'G', 'E', 'E'],
+    ['E', 'B', 'B', 'B', 'R', 'R', 'R', 'R', 'R', 'G', 'G', 'G', 'E'],
+    ['E', 'B', 'B', 'B', 'R', 'R', 'R', 'R', 'R', 'G', 'G', 'G', 'E'],
+    ['E', 'B', 'B', 'B', 'R', 'R', 'R', 'R', 'R', 'G', 'G', 'G', 'E'],
+    ['E', 'GR', 'E', 'E', 'GR', 'E', 'GR', 'E', 'GR', 'E', 'E', 'GR', 'E'],
+    ['E', 'E', 'E', 'E', 'E', 'E', 'GR', 'E', 'E', 'E', 'E', 'E', 'E'],
+    ['E', 'E', 'E', 'E', 'E', 'E', 'GR', 'E', 'E', 'E', 'E', 'E', 'E'],
+    ['E', 'E', 'E', 'E', 'E', 'E', 'GR', 'E', 'E', 'E', 'E', 'E', 'E'],
+    ['E', 'E', 'E', 'E', 'Y', 'E', 'Y', 'E', 'E', 'E', 'E', 'E', 'E'],
+    ['E', 'E', 'E', 'E', 'Y', 'Y', 'Y', 'E', 'E', 'E', 'E', 'E', 'E'],
+    ['E', 'E', 'E', 'E', 'E', 'Y', 'E', 'E', 'E', 'E', 'E', 'E', 'E']
+    ];
+
     // для создания кирпичей по массивам выше
     const colorMap = {
       'C': 'coral',
@@ -118,9 +153,7 @@
       'O': 'orange',
       'G': 'green',
       'Y': 'yellow',
-
       'GR': 'gray',
-
       'LG': 'dodgerblue',
       'B': 'blue',
       'P': 'purple'
@@ -162,7 +195,6 @@
 
     // строим первый уровень
     if (curlevel == 1) {
-
     for (let row = 0; row < level1.length; row++) {
       for (let col = 0; col < level1[row].length; col++) {
         const colorCode = level1[row][col];
@@ -175,9 +207,7 @@
         });
     }
     }
-
 }
-
 
 
 
@@ -185,27 +215,7 @@
     function getRandomInt(max) {
       return Math.floor(Math.random() * max);
     }
-
-
-
-      // если шарик не запущен — запускаем его на пробел или enter
-      if (ball.dx === 0 && ball.dy === 0 && (e.which === 32 || e.which === 13)) {
-        ball.x = paddle.x + paddle.width / 2;
-        ball.dx = paddle.dx;
-        ball.dy = -ball.speed;
-      }
-    });
-
-    // останавливаем платформу, если клавиши не нажаты
-    document.addEventListener('keyup', function(e) {
-      if (e.which === 37 || e.which === 39) {
-        paddle.dx = 0;
-      }
-      if (e.which === 38 || e.which === 40) {
-        paddle.dy = 0;
-      }
-    });
-
+    
     // проверка двух объектов на колллизию
     function collides(obj1, obj2) {
       return obj1.x < obj2.x + obj2.width &&
@@ -322,7 +332,29 @@ function game() {
             }
           }
         
-        }
+        } else if (curlevel == 3) { // переход на четвертый
+
+          // подгоняем статы для четвертого уровня
+          curlevel = 4;
+          brickWidth = 24;
+          wallSize = 32;
+
+            for (let row = 0; row < level4.length; row++) {
+            for (let col = 0; col < level4[row].length; col++) {
+              if (level4[row][col] != 'E') {
+                const colorCode = level4[row][col];
+        bricks.push({
+          x: wallSize + (brickWidth + brickGap) * col,
+          y: wallSize + (brickHeight + brickGap) * row,
+          color: colorMap[colorCode],
+          width: brickWidth,
+          height: brickHeight
+        });
+              }
+            }
+          }
+          
+        } 
 
         // телепортируем платформу в центр
         paddle.x = canvas.width / 2 - brickWidth;
@@ -346,8 +378,7 @@ function game() {
 
 
         if (curlevel == 1) { // рестарт первого уровня (строим его как и раньше)
-       
-
+   
         // обнуляем массив кирпичей
         bricks = [];
 
@@ -366,7 +397,6 @@ function game() {
     }
           }
         }
-
       }
 
       if (curlevel == 2) { // рестарт второго уровня (строим его как и раньше)
@@ -391,7 +421,6 @@ function game() {
           }
       }
 
-
       if (curlevel == 3) { // рестарт третьего уровня (строим его как и раньше)
        
         // обнуляем массив кирпичей
@@ -413,7 +442,31 @@ function game() {
             }
           }
       }
+      if (curlevel == 4) { // рестарт четвертого уровня (строим его как и раньше)
 
+            // подгоняем статы для четвертого уровня
+            brickWidth = 20;
+            wallSize = 25;
+
+            // обнуляем массив кирпичей
+            bricks = [];
+
+            for (let row = 0; row < level4.length; row++) {
+            for (let col = 0; col < level4[row].length; col++) {
+
+              if (level4[row][col] != 'E') {
+                const colorCode = level4[row][col];
+        bricks.push({
+          x: wallSize + (brickWidth + brickGap) * col,
+          y: wallSize + (brickHeight + brickGap) * row,
+          color: colorMap[colorCode],
+          width: brickWidth,
+          height: brickHeight
+        });
+              }
+            }
+          }
+      }
       // телепортируем платформу в центр
       paddle.x = canvas.width / 2 - brickWidth;
       paddle.y = 440;
@@ -484,7 +537,6 @@ function game() {
         }
       }
 
-
       // проверка шарика на коллизию с боковыми стенками
       if (ball.x < wallSize) {
         ball.x = wallSize;
@@ -527,8 +579,7 @@ function game() {
       } else if (paddle.y > 450) {
         paddle.y = 450;
       }
-
-
+      
       // проверка коллизии шарика с платформой
       if (collides(ball, paddle)) {
         if (ball.x < paddle.x || ball.x + ball.width > paddle.x + paddle.width) { // касание сбоку
