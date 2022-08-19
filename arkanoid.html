@@ -33,7 +33,9 @@
                 <p>
                     <font
                         size="4"color="white" face = "">
+
                         1) Ваша цель - пройти пять уровней, разбив все блоки на каждом из них <br>
+
                         2) Новый уровень - новый чекпоинт <br>
                     </font>
                 </p>
@@ -52,11 +54,14 @@
 
     // добавлен пятый уровень
 
+
+
     // ОПИСАНИЕ ПЕРЕМЕННЫХ
 
     var canvas = document.getElementById('game');
     var context = canvas.getContext('2d');
     var curlevel = 1; // уровень, который мы проходим в данный момент 
+
     var bottom = 0; // низ уровня для ограничения движения платформы
 
 
@@ -168,6 +173,7 @@
     ['E', 'E', 'E', 'E', 'E', 'E', 'GR', 'E', 'E', 'E', 'E', 'E', 'E']
     ];
 
+
     // для создания кирпичей по массивам выше
     const colorMap = {
       'C': 'coral',
@@ -239,6 +245,23 @@
     }
 
 
+      // если шарик не запущен — запускаем его на пробел или enter
+      if (ball.dx === 0 && ball.dy === 0 && (e.which === 32 || e.which === 13)) {
+        ball.x = paddle.x + paddle.width / 2;
+        ball.dx = paddle.dx;
+        ball.dy = -ball.speed;
+      }
+    });
+
+    // останавливаем платформу, если клавиши не нажаты
+    document.addEventListener('keyup', function(e) {
+      if (e.which === 37 || e.which === 39) {
+        paddle.dx = 0;
+      }
+      if (e.which === 38 || e.which === 40) {
+        paddle.dy = 0;
+      }
+    });
 
     // проверка двух объектов на колллизию
     function collides(obj1, obj2) {
@@ -400,6 +423,7 @@ function game() {
             }
           }
         }
+
         // телепортируем платформу в центр
         paddle.x = canvas.width / 2 - brickWidth;
           paddle.y = 440;
@@ -422,6 +446,7 @@ function game() {
 
         if (curlevel == 1) { // рестарт первого уровня (строим его как и раньше)
        
+
         // обнуляем массив кирпичей
         bricks = [];
 
@@ -532,6 +557,7 @@ function game() {
             }
           }
       }
+
 
       // телепортируем платформу в центр
       paddle.x = canvas.width / 2 - brickWidth;
