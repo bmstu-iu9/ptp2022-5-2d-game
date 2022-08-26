@@ -53,6 +53,7 @@
                     <button onclick="edit()"> Эдитор уровней</button>
                 </p>
             </form>
+
            </td>
         
            
@@ -68,11 +69,13 @@
 
     // добавлен выбор кирпичей в эдиторе
 
+
     // ОПИСАНИЕ ПЕРЕМЕННЫХ
 
     var canvas = document.getElementById('game');
     var context = canvas.getContext('2d');
     var curlevel = 0; // уровень, который мы проходим в данный момент ; 0 для эдитора, 1 для нормальной игры
+
     var extralives = 0; // количество жизней
     var bonusbricks = 0; // количество кирпичей с бонусами для ограничения
     var bottom = 0; // низ уровня для ограничения движения платформы
@@ -231,6 +234,7 @@
       dx: 0,
       dy: 0
     };
+
 
     // второй шарик
     var secondball ={
@@ -1757,6 +1761,7 @@ function game() {
         secondball.y = paddle.y - secondball.height;
           }
       }
+
     }
 
 
