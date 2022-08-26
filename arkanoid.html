@@ -40,6 +40,7 @@
                         5) Светло-зелёные блоки уменьшают скорость шарика <br>
                         6) Блоки розового цвета дают вам дополнительную жизнь <br>
                         7) Блоки бордового цвета добавляют второй шарик
+
                     </font>
                 </p>
                 
@@ -77,6 +78,7 @@
     var curlevel = 0; // уровень, который мы проходим в данный момент ; 0 для эдитора, 1 для нормальной игры
 
     var extralives = 0; // количество жизней
+
     var bonusbricks = 0; // количество кирпичей с бонусами для ограничения
     var bottom = 0; // низ уровня для ограничения движения платформы
 
@@ -283,6 +285,7 @@
           width: brickWidth,
           height: brickHeight
         });
+
     } else if (rand == 21) { // уменьшение скорости
         bonusbricks += 1;
         bricks.push({
@@ -310,6 +313,18 @@
           width: brickWidth,
           height: brickHeight
         });
+    }
+} else { // обычный блок
+
+        const colorCode = level1[row][col];
+        bricks.push({
+          x: wallSize + (brickWidth + brickGap) * col,
+          y: wallSize + (brickHeight + brickGap) * row,
+          color: colorMap[colorCode],
+          width: brickWidth,
+          height: brickHeight
+        });
+        }
     }
 } else { // обычный блок
         const colorCode = level1[row][col];
@@ -414,6 +429,7 @@ function game() {
 
 
 
+
       // переходим на следующий уровень, если этот зачищен
       if (bricks.length == 0) { 
 
@@ -443,6 +459,7 @@ function game() {
                     let rand = getRandomInt(50); // переменная для определения бонусных кирпичей
                 if (bonusbricks < 5) { // ограничение количества бонусных кирпичей
         if (rand == 7) { // увеличение платформы
+
             bonusbricks += 1;
             bricks.push({
           x: wallSize + (brickWidth + brickGap) * col,
@@ -452,6 +469,7 @@ function game() {
           height: brickHeight
         });
     } else if (rand == 19) { // увеличение скорости шарика
+
         bonusbricks += 1;
         bricks.push({
           x: wallSize + (brickWidth + brickGap) * col,
@@ -470,6 +488,7 @@ function game() {
           height: brickHeight
         }); 
     } else if (rand == 21) { // уменьшение скорости шарика
+
         bonusbricks += 1;
         bricks.push({
           x: wallSize + (brickWidth + brickGap) * col,
@@ -489,6 +508,7 @@ function game() {
         });
     } else { // обычный блок
         const colorCode = level2[row][col];
+
         bricks.push({
           x: wallSize + (brickWidth + brickGap) * col,
           y: wallSize + (brickHeight + brickGap) * row,
@@ -499,6 +519,7 @@ function game() {
         }
     } else { // обычный блок
         const colorCode = level2[row][col];
+
         bricks.push({
           x: wallSize + (brickWidth + brickGap) * col,
           y: wallSize + (brickHeight + brickGap) * row,
@@ -509,6 +530,7 @@ function game() {
     }
               }
             }
+
           }
             
         } else if (curlevel == 2) { // переход на третий
@@ -579,6 +601,7 @@ function game() {
         });
         }
     } else { // обычный блок
+
         const colorCode = level3[row][col];
         bricks.push({
           x: wallSize + (brickWidth + brickGap) * col,
@@ -590,6 +613,7 @@ function game() {
     }
               }
             }
+
           }
         
         } else if (curlevel == 3) { // переход на четвертый
