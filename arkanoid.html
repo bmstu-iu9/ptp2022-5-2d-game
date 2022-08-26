@@ -4,83 +4,282 @@
 <head>
   <title>Арканоид</title>
   <div> </div>
-  <style>    
+  <style>
+    @font-face {
+        font-family: 'ArcadeClassic';
+        src: url('fonts/ArcadeClassic.eot'); /* IE9 Compat Modes */
+        src: url('fonts/ArcadeClassic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+          url('fonts/ArcadeClassic.woff2') format('woff2'), /* Super Modern Browsers */
+          url('fonts/ArcadeClassic.woff') format('woff'), /* Pretty Modern Browsers */
+          url('fonts/ArcadeClassic.ttf')  format('truetype'), /* Safari, Android, iOS */
+          url('fonts/ArcadeClassic.svg#svgFontName') format('svg'); /* Legacy iOS */
+    }
     html,
     body {
+      font-family: 'Arial', sans-serif;
       height: 100%;
       margin: 0;
-    }    
-    body {
-      background: black;
+    }
+    .game__title {
+      font-family: 'ArcadeClassic', sans-serif;
+      color: #fff;
+      font-size: 150px;
+      text-align: center;
+      margin-bottom: 10vh;
+      text-shadow: 10px 15px 20px rgba(0,0,0,0.5);
+    }
+    .game {
+      width: 100%;
+      background: #000 url(img/bg.png) no-repeat center center / cover;
+    }
+    .container {
+      width: 1240px;
+      margin: 0 auto;
+      min-height: 100vh;
+      background: url(img/arc-bg.png) repeat top left;
       display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      border-left: 10px solid #fff;
+      border-right: 10px solid #fff;
+      box-shadow: inset 20px 0 30px rgba(0,0,0,0.2), inset -20px 0 30px rgba(0,0,0,0.4);
+    }
+    .game-wrap {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      margin-bottom: 60px;
+    }
+    .nav-btn-wr, .description {
+      min-width: 260px;
+      max-width: 260px;
+      display: flex;
+      justify-content: center;
       align-items: center;
     }
+    .nav-btn-wr {
+      margin-right: 40px;
+    }
+    .description {
+      margin-left: 40px;
+    }
+    .game-container {
+      width: 540px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+    }
+    #game {
+      transform: scale(1.3);
+      box-shadow: 0 0 20px rgba(0,0,0,0.4);
+      border-radius: 10px 10px 0px 0px;
+      background: #000;
+      position: relative;
+      z-index: 100;
+    }
+    .nav__var {
+      font-size: 28px;
+      color: #fff;
+      margin-bottom: 35px;
+      font-weight: 600;
+      text-align: center;
+      width: 260px;
+    }
+    .nav-btn-wr {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 220px;
+      height: 90px;
+      font-size: 26px;
+      font-weight: 600;
+      color: #fff;
+      border: 0;
+      border-radius: 20px;
+      margin-bottom: 30px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .btn-2 {
+      background: #FFA800;
+      box-shadow: 0 0 12px #FFA800;
+    }
+    .btn-2:hover {
+      box-shadow: 0 0 34px #FFA800;
+    }
+    .btn-1 {
+      background: #00E917;
+      box-shadow: 0 0 12px #00E917;
+    }
+    .btn-3 {
+      background: #eb3443;
+      box-shadow: 0 0 12px #eb3443;
+    }
+    .btn-3:hover {
+      box-shadow: 0 0 34px #fc5361;
+    }
+    .btn-1:hover {
+      box-shadow: 0 0 34px #00E917;
+    }
+    .descript-list {
+      padding: 16px;
+      border: 3px solid #fff;
+      border-radius: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.4);
+    }
+    .descript-list li {
+      display: block;
+      font-size: 16px;
+      line-height: 19px;
+      color: #fff;
+      margin-bottom: 6px;
+      position: relative;
+      padding-left: 15px;
+    }
+    .descript-list li:before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #fff;
+      position: absolute;
+      left: 0;
+      top: 5px;
+    }
+    .preloader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: url(img/arc-bg.png) repeat top left;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+    }
+    .preloader.visible {
+      visibility: visible;
+      opacity: 1;
+      transition: opacity 1s linear;
+    }
+    .preloader.hidden {
+      visibility: hidden;
+      opacity: 0;
+      transition: visibility 0s 1s, opacity 1s linear;
+    }
+    .preloader-text {
+      width: 8ch;
+      font-family: 'ArcadeClassic', sans-serif;
+      color: #fff;
+      font-size: 250px;
+      text-align: center;
+      text-shadow: 10px 15px 20px rgba(0,0,0,0.5);
+      white-space: nowrap; /* не переносить текст на другую строку */
+      overflow: hidden; /* скрываем переполнение контентом */
+      border-right: 3px solid white; /* рисуем курсор */
+      animation: cursor 0.6s step-end infinite, printed_text 1.5s steps(8);
+    }
+    @keyframes cursor {
+      0% {
+        border-color: white;
+      }
+      50% {
+        border-color: transparent;
+      }
+      100% {
+        border-color: white;
+      }
+    }
+    @keyframes printed_text {
+      from {
+        width: 0;
+      }
+    }
   </style>
+
+
 </head>
 
-<body>
-    <table align="left" width="715" border="0"
-    align="center" cellspacing="0" cellpadding="5">
-    <tr bgcolor="black">
-        <td height="10">
-            <font
-                size="8"color="white" face = "">
-                Правила игры:
-            </font>
-        </td>
-       </tr>
-           <td>
-                <p>
-                    <font
-                        size="4"color="white" face = "">
-                        1) Ваша цель - пройти пять уровней, разбив все блоки на каждом из них <br>
-                        2) Новый уровень - новый чекпоинт <br>
-                        3) Белые, светло-серые и светло-оранжевые блоки увеличивают размер платформы <br>
-                        4) Коричневые, тёмно-серые блоки и блоки цвета tomato увеличивают скорость шарика <br>
-                        5) Светло-зелёные блоки уменьшают скорость шарика <br>
-                        6) Блоки розового цвета дают вам дополнительную жизнь <br>
-                        7) Блоки бордового цвета добавляют второй шарик
-                    </font>
-                </p>
-                
-            <form>
-                <p>
-                    <button onclick="play()">Играть</button>
-                </p>
-            </form>
-            <form>
-                <p>
-                    <button onclick="edit()"> Эдитор уровней</button>
-                </p>
-            </form>
+<body> 
+  <marquee behavior="scroll" direction="left" bgcolor="#000000">
+     <span target=”_blank” style="color:#ffffff; font-size:130%;font-family: 'ArcadeClassic', sans-serif;" onclick="window.open('https://github.com/loonategjr','_blank') ;"> Made  by: loonategjr  </span>.,                <span style="color:#ffffff; font-size:130%;font-family: 'ArcadeClassic', sans-serif;" onclick="window.open('https://github.com/adderallbaby','_blank') ;">adderallbaby </span>,                  <span style="color:#ffffff; font-size:130%;font-family: 'ArcadeClassic', sans-serif;" onclick="window.open('https://github.com/xexenjoyer','_blank') ;"> xexenjoyer </span>,                  <span style="color:#ffffff; font-size:130%;font-family: 'ArcadeClassic', sans-serif;" onclick="window.open('https://github.com/pnkvenemy','_blank') ;">pnkvenemy </span>,                  <span style="color:#ffffff; font-size:130%;font-family: 'ArcadeClassic', sans-serif;" onclick="window.open('https://github.com/IDEII','_blank') ;">IDEII </span>,                  <span style="color:#ffffff; font-size:130%;font-family: 'ArcadeClassic', sans-serif;" onclick="window.open('https://github.com/device0808','_blank') ;">device0808</span>
+  </marquee>
+  
+  <section class="game">
+    <div class="container">
+      <div class="game__title">Arkanoid</div>
+      <div class="game-wrap">
+        <div class="nav">
+          <div class="nav__var">Выбрать режим:</div>
+          <div class="nav-btn-wr">
 
-           </td>
-        
-           
- <tr bgcolor="black">
-   <td colspan="2" width="30%">
-  <canvas 
-  width="400" height="480" id="game">
-  </canvas>
-  </td>
- </tr>
-</table>
+
+            <form><button class="btn btn-1" onclick="game()">Обычная <br>игра</button></form>
+            <form><button class="btn btn-2" onclick="editor(); setLC();">Эдитор <br>уровней</button></form>
+          </div>
+        </div>
+        <div class="game-container">
+          <canvas width="400" height="480" id="game"></canvas>
+        </div>
+        <div class="description">
+          <ul class="descript-list">
+            <li>Ваша цель - пройти пять уровней, разбив все блоки на каждом из них</li>
+            <li>Новый уровень - новый чекпоинт</li>
+            <li>Белые, светло-серые и светло-оранжевые блоки увеличивают размер платформы</li>
+            <li>Коричневые, тёмно-серые блоки и блоки цвета tomato увеличивают скорость шарика</li>
+            <li>Светло-зелёные блоки уменьшают скорость шарика</li>
+            <li>Блоки розового цвета дают вам дополнительную жизнь</li>
+            <li>Блоки бордового цвета добавляют второй шарик</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="preloader visible">
+    <div class="preloader-text">Arkanoid</div>
+  </div>
+
   <script>
+    // Прелоадер
+    function loadData() {
+        return new Promise((resolve, reject) => {
+            // setTimeout не является частью решения
+            // Код ниже должен быть заменен на логику подходящую для решения вашей задачи
+            setTimeout(resolve, 3000);
+        })
+    }
+
+    loadData()
+        .then(() => {
+            let preloaderEl = document.querySelector('.preloader');
+            preloaderEl.classList.add('hidden');
+            preloaderEl.classList.remove('visible');
+    });
 
     // добавлен выбор кирпичей в эдиторе
 
-
     // ОПИСАНИЕ ПЕРЕМЕННЫХ
-
     var canvas = document.getElementById('game');
     var context = canvas.getContext('2d');
-    var curlevel = 0; // уровень, который мы проходим в данный момент ; 0 для эдитора, 1 для нормальной игры
-
+    var curlevel = localStorage.getItem('lvl') == null ? 1 : 0; // уровень, который мы проходим в данный момент ; 0 для эдитора, 1 для нормальной игры (данные подгружаются из localStorage где null = 1, 0 = 0)
     var extralives = 0; // количество жизней
     var bonusbricks = 0; // количество кирпичей с бонусами для ограничения
     var bottom = 0; // низ уровня для ограничения движения платформы
 
-
+    // Записываем данные в localStorage (срабатывает при клике на кнопку "Эдитор уровней")
+    function setLC() {
+      localStorage.setItem('lvl', '0');
+    }
+    // Удаляем данные из localStorage
+    localStorage.removeItem('lvl');
 
 
 
@@ -124,69 +323,69 @@
     ];
 
     var level3 = [ // третий уровень (смайлик)
-        [],
-        [],
-        [],
-        ['E', 'E', 'E', 'E', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'E', 'E', 'E', 'E'],
-        ['E', 'E', 'E', 'E', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'E', 'E', 'E', 'E'],
-        ['E', 'E', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'E', 'E'],
-        ['E', 'E', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'E', 'E'],
-        ['C', 'C', 'C', 'C', 'E', 'E', 'C', 'C', 'C', 'C', 'E', 'E', 'C', 'C', 'C', 'C'],
-        ['C', 'C', 'C', 'C', 'E', 'E', 'C', 'C', 'C', 'C', 'E', 'E', 'C', 'C', 'C', 'C'],
-        ['C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C'],
-        ['C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C'],
-        ['C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C'],
-        ['C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C'],
-        ['C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C'],
-        ['C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C'],
-        ['C', 'C', 'C', 'C', 'GR', 'GR', 'C', 'C', 'C', 'C', 'GR', 'GR', 'C', 'C', 'C', 'C'],
-        ['C', 'C', 'C', 'C', 'GR', 'GR', 'C', 'C', 'C', 'C', 'GR', 'GR', 'C', 'C', 'C', 'C'],
-        ['E', 'E', 'C', 'C', 'C', 'C', 'GR', 'GR', 'GR', 'GR', 'C', 'C', 'C', 'C', 'E', 'E'],
-        ['E', 'E', 'C', 'C', 'C', 'C', 'GR', 'GR', 'GR', 'GR', 'C', 'C', 'C', 'C', 'E', 'E'],
-        ['E', 'E', 'E', 'E', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'E', 'E', 'E', 'E'],
-        ['E', 'E', 'E', 'E', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'E', 'E', 'E', 'E']
+      [],
+      [],
+      [],
+      ['E', 'E', 'E', 'E', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'E', 'E', 'E', 'E'],
+      ['E', 'E', 'E', 'E', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'E', 'E', 'E', 'E'],
+      ['E', 'E', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'E', 'E'],
+      ['E', 'E', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'E', 'E'],
+      ['C', 'C', 'C', 'C', 'E', 'E', 'C', 'C', 'C', 'C', 'E', 'E', 'C', 'C', 'C', 'C'],
+      ['C', 'C', 'C', 'C', 'E', 'E', 'C', 'C', 'C', 'C', 'E', 'E', 'C', 'C', 'C', 'C'],
+      ['C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C'],
+      ['C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C'],
+      ['C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C'],
+      ['C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C'],
+      ['C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C'],
+      ['C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C'],
+      ['C', 'C', 'C', 'C', 'GR', 'GR', 'C', 'C', 'C', 'C', 'GR', 'GR', 'C', 'C', 'C', 'C'],
+      ['C', 'C', 'C', 'C', 'GR', 'GR', 'C', 'C', 'C', 'C', 'GR', 'GR', 'C', 'C', 'C', 'C'],
+      ['E', 'E', 'C', 'C', 'C', 'C', 'GR', 'GR', 'GR', 'GR', 'C', 'C', 'C', 'C', 'E', 'E'],
+      ['E', 'E', 'C', 'C', 'C', 'C', 'GR', 'GR', 'GR', 'GR', 'C', 'C', 'C', 'C', 'E', 'E'],
+      ['E', 'E', 'E', 'E', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'E', 'E', 'E', 'E'],
+      ['E', 'E', 'E', 'E', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'E', 'E', 'E', 'E']
     ];
 
     var level4 = [ // четвёртый уровень (зонтик)
 
-    [],
-    [],
-    ['E', 'E', 'E', 'E', 'E', 'E', 'GR', 'E', 'E', 'E', 'E', 'E', 'E'],
-    ['E', 'E', 'E', 'B', 'B', 'B', 'GR', 'G', 'G', 'G', 'E', 'E', 'E'],
-    ['E', 'E', 'B', 'B', 'B', 'R', 'R', 'R', 'G', 'G', 'G', 'E', 'E'],
-    ['E', 'E', 'B', 'B', 'R', 'R', 'R', 'R', 'R', 'G', 'G', 'E', 'E'],
-    ['E', 'B', 'B', 'B', 'R', 'R', 'R', 'R', 'R', 'G', 'G', 'G', 'E'],
-    ['E', 'B', 'B', 'B', 'R', 'R', 'R', 'R', 'R', 'G', 'G', 'G', 'E'],
-    ['E', 'B', 'B', 'B', 'R', 'R', 'R', 'R', 'R', 'G', 'G', 'G', 'E'],
-    ['E', 'GR', 'E', 'E', 'GR', 'E', 'GR', 'E', 'GR', 'E', 'E', 'GR', 'E'],
-    ['E', 'E', 'E', 'E', 'E', 'E', 'GR', 'E', 'E', 'E', 'E', 'E', 'E'],
-    ['E', 'E', 'E', 'E', 'E', 'E', 'GR', 'E', 'E', 'E', 'E', 'E', 'E'],
-    ['E', 'E', 'E', 'E', 'E', 'E', 'GR', 'E', 'E', 'E', 'E', 'E', 'E'],
-    ['E', 'E', 'E', 'E', 'Y', 'E', 'Y', 'E', 'E', 'E', 'E', 'E', 'E'],
-    ['E', 'E', 'E', 'E', 'Y', 'Y', 'Y', 'E', 'E', 'E', 'E', 'E', 'E'],
-    ['E', 'E', 'E', 'E', 'E', 'Y', 'E', 'E', 'E', 'E', 'E', 'E', 'E']
+      [],
+      [],
+      ['E', 'E', 'E', 'E', 'E', 'E', 'GR', 'E', 'E', 'E', 'E', 'E', 'E'],
+      ['E', 'E', 'E', 'B', 'B', 'B', 'GR', 'G', 'G', 'G', 'E', 'E', 'E'],
+      ['E', 'E', 'B', 'B', 'B', 'R', 'R', 'R', 'G', 'G', 'G', 'E', 'E'],
+      ['E', 'E', 'B', 'B', 'R', 'R', 'R', 'R', 'R', 'G', 'G', 'E', 'E'],
+      ['E', 'B', 'B', 'B', 'R', 'R', 'R', 'R', 'R', 'G', 'G', 'G', 'E'],
+      ['E', 'B', 'B', 'B', 'R', 'R', 'R', 'R', 'R', 'G', 'G', 'G', 'E'],
+      ['E', 'B', 'B', 'B', 'R', 'R', 'R', 'R', 'R', 'G', 'G', 'G', 'E'],
+      ['E', 'GR', 'E', 'E', 'GR', 'E', 'GR', 'E', 'GR', 'E', 'E', 'GR', 'E'],
+      ['E', 'E', 'E', 'E', 'E', 'E', 'GR', 'E', 'E', 'E', 'E', 'E', 'E'],
+      ['E', 'E', 'E', 'E', 'E', 'E', 'GR', 'E', 'E', 'E', 'E', 'E', 'E'],
+      ['E', 'E', 'E', 'E', 'E', 'E', 'GR', 'E', 'E', 'E', 'E', 'E', 'E'],
+      ['E', 'E', 'E', 'E', 'Y', 'E', 'Y', 'E', 'E', 'E', 'E', 'E', 'E'],
+      ['E', 'E', 'E', 'E', 'Y', 'Y', 'Y', 'E', 'E', 'E', 'E', 'E', 'E'],
+      ['E', 'E', 'E', 'E', 'E', 'Y', 'E', 'E', 'E', 'E', 'E', 'E', 'E']
     ];
 
     var level5 = [ // пятый уровень (сердце)
 
-    [],
-    [],
-    [],
-    [],
-    ['E', 'E', 'E', 'R', 'R', 'E', 'E', 'E', 'R', 'R', 'E', 'E', 'E'],
-    ['E', 'E', 'R', 'R', 'R', 'R', 'E', 'R', 'R', 'R', 'R', 'E', 'E'],
-    ['E', 'E', 'R', 'R', 'R', 'R', 'E', 'R', 'R', 'R', 'R', 'E', 'E'],
-    ['E', 'R', 'R', 'R', 'R', 'GR', 'GR', 'R', 'R', 'R', 'R', 'R', 'E'],
-    ['E', 'R', 'R', 'R', 'R', 'GR', 'GR', 'R', 'R', 'R', 'R', 'R', 'E'],
-    ['E', 'R', 'R', 'R', 'R', 'R', 'GR', 'GR', 'R', 'R', 'R', 'R', 'E'],
-    ['E', 'R', 'R', 'R', 'R', 'R', 'GR', 'GR', 'R', 'R', 'R', 'R', 'E'],
-    ['E', 'E', 'R', 'R', 'R', 'GR', 'GR', 'R', 'R', 'R', 'R', 'E', 'E'],
-    ['E', 'E', 'R', 'R', 'R', 'GR', 'GR', 'R', 'R', 'R', 'R', 'E', 'E'],
-    ['E', 'E', 'E', 'R', 'R', 'R', 'GR', 'GR', 'R', 'R', 'E', 'E', 'E'],
-    ['E', 'E', 'E', 'R', 'R', 'R', 'GR', 'GR', 'R', 'R', 'E', 'E', 'E'],
-    ['E', 'E', 'E', 'E', 'R', 'GR', 'GR', 'R', 'R', 'E', 'E', 'E', 'E'],
-    ['E', 'E', 'E', 'E', 'E', 'GR', 'GR', 'R', 'E', 'E', 'E', 'E', 'E'],
-    ['E', 'E', 'E', 'E', 'E', 'E', 'GR', 'E', 'E', 'E', 'E', 'E', 'E']
+      [],
+      [],
+      [],
+      [],
+      ['E', 'E', 'E', 'R', 'R', 'E', 'E', 'E', 'R', 'R', 'E', 'E', 'E'],
+      ['E', 'E', 'R', 'R', 'R', 'R', 'E', 'R', 'R', 'R', 'R', 'E', 'E'],
+      ['E', 'E', 'R', 'R', 'R', 'R', 'E', 'R', 'R', 'R', 'R', 'E', 'E'],
+      ['E', 'R', 'R', 'R', 'R', 'GR', 'GR', 'R', 'R', 'R', 'R', 'R', 'E'],
+      ['E', 'R', 'R', 'R', 'R', 'GR', 'GR', 'R', 'R', 'R', 'R', 'R', 'E'],
+      ['E', 'R', 'R', 'R', 'R', 'R', 'GR', 'GR', 'R', 'R', 'R', 'R', 'E'],
+      ['E', 'R', 'R', 'R', 'R', 'R', 'GR', 'GR', 'R', 'R', 'R', 'R', 'E'],
+      ['E', 'E', 'R', 'R', 'R', 'GR', 'GR', 'R', 'R', 'R', 'R', 'E', 'E'],
+      ['E', 'E', 'R', 'R', 'R', 'GR', 'GR', 'R', 'R', 'R', 'R', 'E', 'E'],
+      ['E', 'E', 'E', 'R', 'R', 'R', 'GR', 'GR', 'R', 'R', 'E', 'E', 'E'],
+      ['E', 'E', 'E', 'R', 'R', 'R', 'GR', 'GR', 'R', 'R', 'E', 'E', 'E'],
+      ['E', 'E', 'E', 'E', 'R', 'GR', 'GR', 'R', 'R', 'E', 'E', 'E', 'E'],
+      ['E', 'E', 'E', 'E', 'E', 'GR', 'GR', 'R', 'E', 'E', 'E', 'E', 'E'],
+      ['E', 'E', 'E', 'E', 'E', 'E', 'GR', 'E', 'E', 'E', 'E', 'E', 'E']
     ];
 
     // для создания кирпичей по массивам выше
@@ -235,9 +434,8 @@
       dy: 0
     };
 
-
     // второй шарик
-    var secondball ={
+    var secondball = {
       x: paddle.x + paddle.width / 2,
       y: paddle.y + paddle.height,
       width: 5,
@@ -251,88 +449,84 @@
 
     // строим первый уровень
     if (curlevel == 1) {
-    for (let row = 0; row < level1.length; row++) {
-      for (let col = 0; col < level1[row].length; col++) {
+      for (let row = 0; row < level1.length; row++) {
+        for (let col = 0; col < level1[row].length; col++) {
 
-        let rand = getRandomInt(50); // переменная для определения бонусных кирпичей
-        if (bonusbricks < 5) { // ограничиваем количество бонусных кирпичей
-        if (rand == 7) {
-            bonusbricks += 1;
+          let rand = getRandomInt(50); // переменная для определения бонусных кирпичей
+          if (bonusbricks < 5) { // ограничиваем количество бонусных кирпичей
+            if (rand == 7) {
+              bonusbricks += 1;
+              bricks.push({
+                x: wallSize + (brickWidth + brickGap) * col,
+                y: wallSize + (brickHeight + brickGap) * row,
+                color: 'white',
+                width: brickWidth,
+                height: brickHeight
+              });
+            } else if (rand == 19) { // увеличение скорости
+              bonusbricks += 1;
+              bricks.push({
+                x: wallSize + (brickWidth + brickGap) * col,
+                y: wallSize + (brickHeight + brickGap) * row,
+                color: 'saddlebrown',
+                width: brickWidth,
+                height: brickHeight
+              });
+            } else if (rand == 0) { // дополнительная жизнь
+              bonusbricks += 1;
+              bricks.push({
+                x: wallSize + (brickWidth + brickGap) * col,
+                y: wallSize + (brickHeight + brickGap) * row,
+                color: 'magenta',
+                width: brickWidth,
+                height: brickHeight
+              });
+            } else if (rand == 21) { // уменьшение скорости
+              bonusbricks += 1;
+              bricks.push({
+                x: wallSize + (brickWidth + brickGap) * col,
+                y: wallSize + (brickHeight + brickGap) * row,
+                color: 'lime',
+                width: brickWidth,
+                height: brickHeight
+              });
+            } else if (rand == 42) { // второй шарик
+              bonusbricks += 1;
+              bricks.push({
+                x: wallSize + (brickWidth + brickGap) * col,
+                y: wallSize + (brickHeight + brickGap) * row,
+                color: 'maroon',
+                width: brickWidth,
+                height: brickHeight
+              });
+            } else { // обычный блок
+              const colorCode = level1[row][col];
+              bricks.push({
+                x: wallSize + (brickWidth + brickGap) * col,
+                y: wallSize + (brickHeight + brickGap) * row,
+                color: colorMap[colorCode],
+                width: brickWidth,
+                height: brickHeight
+              });
+            }
+          } else { // обычный блок
+            const colorCode = level1[row][col];
             bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: 'white',
-          width: brickWidth,
-          height: brickHeight
-        });
-    } else if (rand == 19) { // увеличение скорости
-        bonusbricks += 1;
-        bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: 'saddlebrown',
-          width: brickWidth,
-          height: brickHeight
-        });
-    } else if (rand == 0) { // дополнительная жизнь
-        bonusbricks += 1;
-        bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: 'magenta',
-          width: brickWidth,
-          height: brickHeight
-        });
-    } else if (rand == 21) { // уменьшение скорости
-        bonusbricks += 1;
-        bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: 'lime',
-          width: brickWidth,
-          height: brickHeight
-        });
-    } else if (rand == 42) { // второй шарик
-        bonusbricks += 1;
-        bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: 'maroon',
-          width: brickWidth,
-          height: brickHeight
-        });
-    } else { // обычный блок
-        const colorCode = level1[row][col];
-        bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: colorMap[colorCode],
-          width: brickWidth,
-          height: brickHeight
-        });
-    }
-} else { // обычный блок
-        const colorCode = level1[row][col];
-        bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: colorMap[colorCode],
-          width: brickWidth,
-          height: brickHeight
-        });
+              x: wallSize + (brickWidth + brickGap) * col,
+              y: wallSize + (brickHeight + brickGap) * row,
+              color: colorMap[colorCode],
+              width: brickWidth,
+              height: brickHeight
+            });
+          }
         }
+      }
     }
-    }
-}
-
-
 
     // функция для определения случайного числа для распределения бонусных блоков
     function getRandomInt(max) {
       return Math.floor(Math.random() * max);
     }
-
-
 
     // проверка двух объектов на колллизию
     function collides(obj1, obj2) {
@@ -342,13 +536,11 @@
         obj1.y + obj1.height > obj2.y;
     }
 
-
-
     // отслеживаем нажатия игрока на клавиши
-    document.addEventListener('keydown', function(e) {
+    document.addEventListener('keydown', function (e) {
 
       // стрелка влево
-      if (e.which === 37) { 
+      if (e.which === 37) {
         paddle.dx = -3;
       }
       // стрелка вправо
@@ -380,7 +572,7 @@
     });
 
     // останавливаем платформу, если клавиши не нажаты
-    document.addEventListener('keyup', function(e) {
+    document.addEventListener('keyup', function (e) {
       if (e.which === 37 || e.which === 39) {
         paddle.dx = 0;
       }
@@ -391,31 +583,23 @@
 
     // запускаем игру
     if (curlevel == 0) {
-        cancelAnimationFrame(game);
-        requestAnimationFrame(editor);
+      cancelAnimationFrame(game);
+      requestAnimationFrame(editor);
     } else {
-        cancelAnimationFrame(editor);
-        requestAnimationFrame(game);
+      cancelAnimationFrame(editor);
+      requestAnimationFrame(game);
     }
 
 
 
 
+    // САМА ИГРА
 
-
-
-
-
-
-// САМА ИГРА
-
-function game() {
+    function game() {
       requestAnimationFrame(game);
 
-
-
       // переходим на следующий уровень, если этот зачищен
-      if (bricks.length == 0) { 
+      if (bricks.length == 0) {
 
         // убираем второй шарик
         twoballs = false;
@@ -440,77 +624,77 @@ function game() {
             for (let col = 0; col < level2[row].length; col++) {
 
               if (level2[row][col] != 'E') {
-                    let rand = getRandomInt(50); // переменная для определения бонусных кирпичей
+                let rand = getRandomInt(50); // переменная для определения бонусных кирпичей
                 if (bonusbricks < 5) { // ограничение количества бонусных кирпичей
-        if (rand == 7) { // увеличение платформы
-            bonusbricks += 1;
-            bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: 'silver',
-          width: brickWidth,
-          height: brickHeight
-        });
-    } else if (rand == 19) { // увеличение скорости шарика
-        bonusbricks += 1;
-        bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: 'dimgrey',
-          width: brickWidth,
-          height: brickHeight
-        });
-    } else if (rand == 0) { // дополнительная жизнь
-        bonusbricks += 1;
-        bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: 'magenta',
-          width: brickWidth,
-          height: brickHeight
-        }); 
-    } else if (rand == 21) { // уменьшение скорости шарика
-        bonusbricks += 1;
-        bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: 'lime',
-          width: brickWidth,
-          height: brickHeight
-        }); 
-    } else if (rand == 42) { // второй шарик
-        bonusbricks += 1;
-        bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: 'maroon',
-          width: brickWidth,
-          height: brickHeight
-        });
-    } else { // обычный блок
-        const colorCode = level2[row][col];
-        bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: colorMap[colorCode],
-          width: brickWidth,
-          height: brickHeight
-        });
-        }
-    } else { // обычный блок
-        const colorCode = level2[row][col];
-        bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: colorMap[colorCode],
-          width: brickWidth,
-          height: brickHeight
-        });
-    }
+                  if (rand == 7) { // увеличение платформы
+                    bonusbricks += 1;
+                    bricks.push({
+                      x: wallSize + (brickWidth + brickGap) * col,
+                      y: wallSize + (brickHeight + brickGap) * row,
+                      color: 'silver',
+                      width: brickWidth,
+                      height: brickHeight
+                    });
+                  } else if (rand == 19) { // увеличение скорости шарика
+                    bonusbricks += 1;
+                    bricks.push({
+                      x: wallSize + (brickWidth + brickGap) * col,
+                      y: wallSize + (brickHeight + brickGap) * row,
+                      color: 'dimgrey',
+                      width: brickWidth,
+                      height: brickHeight
+                    });
+                  } else if (rand == 0) { // дополнительная жизнь
+                    bonusbricks += 1;
+                    bricks.push({
+                      x: wallSize + (brickWidth + brickGap) * col,
+                      y: wallSize + (brickHeight + brickGap) * row,
+                      color: 'magenta',
+                      width: brickWidth,
+                      height: brickHeight
+                    });
+                  } else if (rand == 21) { // уменьшение скорости шарика
+                    bonusbricks += 1;
+                    bricks.push({
+                      x: wallSize + (brickWidth + brickGap) * col,
+                      y: wallSize + (brickHeight + brickGap) * row,
+                      color: 'lime',
+                      width: brickWidth,
+                      height: brickHeight
+                    });
+                  } else if (rand == 42) { // второй шарик
+                    bonusbricks += 1;
+                    bricks.push({
+                      x: wallSize + (brickWidth + brickGap) * col,
+                      y: wallSize + (brickHeight + brickGap) * row,
+                      color: 'maroon',
+                      width: brickWidth,
+                      height: brickHeight
+                    });
+                  } else { // обычный блок
+                    const colorCode = level2[row][col];
+                    bricks.push({
+                      x: wallSize + (brickWidth + brickGap) * col,
+                      y: wallSize + (brickHeight + brickGap) * row,
+                      color: colorMap[colorCode],
+                      width: brickWidth,
+                      height: brickHeight
+                    });
+                  }
+                } else { // обычный блок
+                  const colorCode = level2[row][col];
+                  bricks.push({
+                    x: wallSize + (brickWidth + brickGap) * col,
+                    y: wallSize + (brickHeight + brickGap) * row,
+                    color: colorMap[colorCode],
+                    width: brickWidth,
+                    height: brickHeight
+                  });
+                }
               }
             }
           }
-            
+
         } else if (curlevel == 2) { // переход на третий
 
           // подгоянем статы для третьего уровня
@@ -518,80 +702,80 @@ function game() {
           brickWidth = 20;
           wallSize = 25;
 
-            for (let row = 0; row < level3.length; row++) {
+          for (let row = 0; row < level3.length; row++) {
             for (let col = 0; col < level3[row].length; col++) {
               if (level3[row][col] != 'E') {
                 let rand = getRandomInt(50); // переменная для определения бонусных кирпичей
                 if (bonusbricks < 5) { // ограничение количества бонусных кирпичей
-        if (rand == 7) { // увеличение платформы
-            bonusbricks += 1;
-            bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: 'lightsalmon',
-          width: brickWidth,
-          height: brickHeight
-        });
-    } else if (rand == 19) { // увеличение скорости шарика
-        bonusbricks += 1;
-        bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: 'tomato',
-          width: brickWidth,
-          height: brickHeight
-        });
-    } else if (rand == 0) { // дополнительная жизнь
-        bonusbricks += 1;
-        bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: 'magenta',
-          width: brickWidth,
-          height: brickHeight
-        });
-    } else if (rand == 21) { // уменьшение скорости шарика
-        bonusbricks += 1;
-        bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: 'lime',
-          width: brickWidth,
-          height: brickHeight
-        });
-    } else if (rand == 42) { // второй шарик
-        bonusbricks += 1;
-        bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: 'maroon',
-          width: brickWidth,
-          height: brickHeight
-        });
-    } else { // обычный блок
-        const colorCode = level3[row][col];
-        bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: colorMap[colorCode],
-          width: brickWidth,
-          height: brickHeight
-        });
-        }
-    } else { // обычный блок
-        const colorCode = level3[row][col];
-        bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: colorMap[colorCode],
-          width: brickWidth,
-          height: brickHeight
-        });
-    }
+                  if (rand == 7) { // увеличение платформы
+                    bonusbricks += 1;
+                    bricks.push({
+                      x: wallSize + (brickWidth + brickGap) * col,
+                      y: wallSize + (brickHeight + brickGap) * row,
+                      color: 'lightsalmon',
+                      width: brickWidth,
+                      height: brickHeight
+                    });
+                  } else if (rand == 19) { // увеличение скорости шарика
+                    bonusbricks += 1;
+                    bricks.push({
+                      x: wallSize + (brickWidth + brickGap) * col,
+                      y: wallSize + (brickHeight + brickGap) * row,
+                      color: 'tomato',
+                      width: brickWidth,
+                      height: brickHeight
+                    });
+                  } else if (rand == 0) { // дополнительная жизнь
+                    bonusbricks += 1;
+                    bricks.push({
+                      x: wallSize + (brickWidth + brickGap) * col,
+                      y: wallSize + (brickHeight + brickGap) * row,
+                      color: 'magenta',
+                      width: brickWidth,
+                      height: brickHeight
+                    });
+                  } else if (rand == 21) { // уменьшение скорости шарика
+                    bonusbricks += 1;
+                    bricks.push({
+                      x: wallSize + (brickWidth + brickGap) * col,
+                      y: wallSize + (brickHeight + brickGap) * row,
+                      color: 'lime',
+                      width: brickWidth,
+                      height: brickHeight
+                    });
+                  } else if (rand == 42) { // второй шарик
+                    bonusbricks += 1;
+                    bricks.push({
+                      x: wallSize + (brickWidth + brickGap) * col,
+                      y: wallSize + (brickHeight + brickGap) * row,
+                      color: 'maroon',
+                      width: brickWidth,
+                      height: brickHeight
+                    });
+                  } else { // обычный блок
+                    const colorCode = level3[row][col];
+                    bricks.push({
+                      x: wallSize + (brickWidth + brickGap) * col,
+                      y: wallSize + (brickHeight + brickGap) * row,
+                      color: colorMap[colorCode],
+                      width: brickWidth,
+                      height: brickHeight
+                    });
+                  }
+                } else { // обычный блок
+                  const colorCode = level3[row][col];
+                  bricks.push({
+                    x: wallSize + (brickWidth + brickGap) * col,
+                    y: wallSize + (brickHeight + brickGap) * row,
+                    color: colorMap[colorCode],
+                    width: brickWidth,
+                    height: brickHeight
+                  });
+                }
               }
             }
           }
-        
+
         } else if (curlevel == 3) { // переход на четвертый
 
           // подгоняем статы для четвертого уровня
@@ -599,174 +783,174 @@ function game() {
           brickWidth = 24;
           wallSize = 32;
 
-            for (let row = 0; row < level4.length; row++) {
+          for (let row = 0; row < level4.length; row++) {
             for (let col = 0; col < level4[row].length; col++) {
               if (level4[row][col] != 'E') {
                 let rand = getRandomInt(50); // переменная для распределения бонусных блоков
                 if (bonusbricks < 5) { // ограничение количества бонусных блоков
-        if (rand == 7) { // увеличение платформы
-            bonusbricks += 1;
-            bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: 'white',
-          width: brickWidth,
-          height: brickHeight
-        });
-    } else if (rand == 19) { // увеличение скорости шарика
-        bonusbricks += 1;
-        bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: 'saddlebrown',
-          width: brickWidth,
-          height: brickHeight
-        });
-    } else if (rand == 0) { // дополнительная жизнь
-        bonusbricks += 1;
-        bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: 'magenta',
-          width: brickWidth,
-          height: brickHeight
-        });
-    } else if (rand == 21) { // уменьшение скорости шарика
-        bonusbricks += 1;
-        bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: 'lime',
-          width: brickWidth,
-          height: brickHeight
-        });
-    } else if (rand == 42) { // второй шарик
-        bonusbricks += 1;
-        bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: 'maroon',
-          width: brickWidth,
-          height: brickHeight
-        });
-    } else { // обычный блок
-        const colorCode = level4[row][col];
-        bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: colorMap[colorCode],
-          width: brickWidth,
-          height: brickHeight
-        });
-        }
-    } else { // обычный блок 
-        const colorCode = level4[row][col];
-        bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: colorMap[colorCode],
-          width: brickWidth,
-          height: brickHeight
-        });  
-    }
+                  if (rand == 7) { // увеличение платформы
+                    bonusbricks += 1;
+                    bricks.push({
+                      x: wallSize + (brickWidth + brickGap) * col,
+                      y: wallSize + (brickHeight + brickGap) * row,
+                      color: 'white',
+                      width: brickWidth,
+                      height: brickHeight
+                    });
+                  } else if (rand == 19) { // увеличение скорости шарика
+                    bonusbricks += 1;
+                    bricks.push({
+                      x: wallSize + (brickWidth + brickGap) * col,
+                      y: wallSize + (brickHeight + brickGap) * row,
+                      color: 'saddlebrown',
+                      width: brickWidth,
+                      height: brickHeight
+                    });
+                  } else if (rand == 0) { // дополнительная жизнь
+                    bonusbricks += 1;
+                    bricks.push({
+                      x: wallSize + (brickWidth + brickGap) * col,
+                      y: wallSize + (brickHeight + brickGap) * row,
+                      color: 'magenta',
+                      width: brickWidth,
+                      height: brickHeight
+                    });
+                  } else if (rand == 21) { // уменьшение скорости шарика
+                    bonusbricks += 1;
+                    bricks.push({
+                      x: wallSize + (brickWidth + brickGap) * col,
+                      y: wallSize + (brickHeight + brickGap) * row,
+                      color: 'lime',
+                      width: brickWidth,
+                      height: brickHeight
+                    });
+                  } else if (rand == 42) { // второй шарик
+                    bonusbricks += 1;
+                    bricks.push({
+                      x: wallSize + (brickWidth + brickGap) * col,
+                      y: wallSize + (brickHeight + brickGap) * row,
+                      color: 'maroon',
+                      width: brickWidth,
+                      height: brickHeight
+                    });
+                  } else { // обычный блок
+                    const colorCode = level4[row][col];
+                    bricks.push({
+                      x: wallSize + (brickWidth + brickGap) * col,
+                      y: wallSize + (brickHeight + brickGap) * row,
+                      color: colorMap[colorCode],
+                      width: brickWidth,
+                      height: brickHeight
+                    });
+                  }
+                } else { // обычный блок 
+                  const colorCode = level4[row][col];
+                  bricks.push({
+                    x: wallSize + (brickWidth + brickGap) * col,
+                    y: wallSize + (brickHeight + brickGap) * row,
+                    color: colorMap[colorCode],
+                    width: brickWidth,
+                    height: brickHeight
+                  });
+                }
               }
             }
           }
-          
-        } else if (curlevel = 4) {  // переход на пятый уровень
+
+        } else if (curlevel = 4) { // переход на пятый уровень
 
           // подгоняем статы для пятого уровня
           curlevel = 5;
           brickWidth = 24;
           wallSize = 32;
 
-            for (let row = 0; row < level5.length; row++) {
+          for (let row = 0; row < level5.length; row++) {
             for (let col = 0; col < level5[row].length; col++) {
               if (level5[row][col] != 'E') {
                 let rand = getRandomInt(50); // переменная для распределения бонусных блоков
                 if (bonusbricks < 5) { // ограничение количества бонусных блоков
-        if (rand == 7) { // увеличение платформы
-            bonusbricks += 1;
-            bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: 'white',
-          width: brickWidth,
-          height: brickHeight
-        });
-    } else if (rand == 19) { // увеличение скорости шарика
-        bonusbricks += 1;
-        bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: 'saddlebrown',
-          width: brickWidth,
-          height: brickHeight
-        });
-    } else if (rand == 0) { // дополнительная жизнь
-        bonusbricks += 1;
-        bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: 'magenta',
-          width: brickWidth,
-          height: brickHeight
-        });
-    } else if (rand == 21) { // уменьшение скорости шарика
-        bonusbricks += 1;
-        bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: 'lime',
-          width: brickWidth,
-          height: brickHeight
-        });
-    } else if (rand == 42) { // второй шарик
-        bonusbricks += 1;
-        bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: 'maroon',
-          width: brickWidth,
-          height: brickHeight
-        });
-    } else { // обычный блок
-        const colorCode = level5[row][col];
-        bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: colorMap[colorCode],
-          width: brickWidth,
-          height: brickHeight
-        });
-        }
-    } else { // обычный блок
-        const colorCode = level5[row][col];
-        bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: colorMap[colorCode],
-          width: brickWidth,
-          height: brickHeight
-        });  
-    }
+                  if (rand == 7) { // увеличение платформы
+                    bonusbricks += 1;
+                    bricks.push({
+                      x: wallSize + (brickWidth + brickGap) * col,
+                      y: wallSize + (brickHeight + brickGap) * row,
+                      color: 'white',
+                      width: brickWidth,
+                      height: brickHeight
+                    });
+                  } else if (rand == 19) { // увеличение скорости шарика
+                    bonusbricks += 1;
+                    bricks.push({
+                      x: wallSize + (brickWidth + brickGap) * col,
+                      y: wallSize + (brickHeight + brickGap) * row,
+                      color: 'saddlebrown',
+                      width: brickWidth,
+                      height: brickHeight
+                    });
+                  } else if (rand == 0) { // дополнительная жизнь
+                    bonusbricks += 1;
+                    bricks.push({
+                      x: wallSize + (brickWidth + brickGap) * col,
+                      y: wallSize + (brickHeight + brickGap) * row,
+                      color: 'magenta',
+                      width: brickWidth,
+                      height: brickHeight
+                    });
+                  } else if (rand == 21) { // уменьшение скорости шарика
+                    bonusbricks += 1;
+                    bricks.push({
+                      x: wallSize + (brickWidth + brickGap) * col,
+                      y: wallSize + (brickHeight + brickGap) * row,
+                      color: 'lime',
+                      width: brickWidth,
+                      height: brickHeight
+                    });
+                  } else if (rand == 42) { // второй шарик
+                    bonusbricks += 1;
+                    bricks.push({
+                      x: wallSize + (brickWidth + brickGap) * col,
+                      y: wallSize + (brickHeight + brickGap) * row,
+                      color: 'maroon',
+                      width: brickWidth,
+                      height: brickHeight
+                    });
+                  } else { // обычный блок
+                    const colorCode = level5[row][col];
+                    bricks.push({
+                      x: wallSize + (brickWidth + brickGap) * col,
+                      y: wallSize + (brickHeight + brickGap) * row,
+                      color: colorMap[colorCode],
+                      width: brickWidth,
+                      height: brickHeight
+                    });
+                  }
+                } else { // обычный блок
+                  const colorCode = level5[row][col];
+                  bricks.push({
+                    x: wallSize + (brickWidth + brickGap) * col,
+                    y: wallSize + (brickHeight + brickGap) * row,
+                    color: colorMap[colorCode],
+                    width: brickWidth,
+                    height: brickHeight
+                  });
+                }
               }
             }
           }
         }
         // телепортируем платформу в центр
         paddle.x = canvas.width / 2 - brickWidth;
-          paddle.y = 440;
-      
-          // телепортируем шарик к платформе
-          ball.dx = 0;
-          ball.dy = 0;
+        paddle.y = 440;
+
+        // телепортируем шарик к платформе
+        ball.dx = 0;
+        ball.dy = 0;
       }
 
       // на каждом кадре всё стираем 
       context.clearRect(0, 0, canvas.width, canvas.height);
 
-    
+
 
 
 
@@ -781,250 +965,250 @@ function game() {
           secondball.dy = 0;
           bonusbricks = 0;
 
-        if (curlevel == 1) { // рестарт первого уровня (строим его как и раньше)
-       
-        // обнуляем массив кирпичей
-        bricks = [];
+          if (curlevel == 1) { // рестарт первого уровня (строим его как и раньше)
 
-        for (let row = 0; row < level1.length; row++) {
-          for (let col = 0; col < level1[row].length; col++) {
+            // обнуляем массив кирпичей
+            bricks = [];
 
-            if (level1[row][col] != 'E') {
-            let rand = getRandomInt(50);
-            if (bonusbricks < 5) {
-        if (rand == 7) {
-            bonusbricks += 1;
-            bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: 'white',
-          width: brickWidth,
-          height: brickHeight
-        });
-    } else if (rand == 19) {
-        bonusbricks += 1;
-        bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: 'saddlebrown',
-          width: brickWidth,
-          height: brickHeight
-        });
-    } else if (rand == 0) {
-        bonusbricks += 1;
-        bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: 'magenta',
-          width: brickWidth,
-          height: brickHeight
-        });
-    } else if (rand == 21) {
-        bonusbricks += 1;
-        bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: 'lime',
-          width: brickWidth,
-          height: brickHeight
-        });
-    } else if (rand == 42) {
-        bonusbricks += 1;
-        bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: 'maroon',
-          width: brickWidth,
-          height: brickHeight
-        });
-    } else {
-        const colorCode = level1[row][col];
-        bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: colorMap[colorCode],
-          width: brickWidth,
-          height: brickHeight
-        });
-        }
-    } else {
-        const colorCode = level1[row][col];
-        bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: colorMap[colorCode],
-          width: brickWidth,
-          height: brickHeight
-        });
-    }
-    }
+            for (let row = 0; row < level1.length; row++) {
+              for (let col = 0; col < level1[row].length; col++) {
+
+                if (level1[row][col] != 'E') {
+                  let rand = getRandomInt(50);
+                  if (bonusbricks < 5) {
+                    if (rand == 7) {
+                      bonusbricks += 1;
+                      bricks.push({
+                        x: wallSize + (brickWidth + brickGap) * col,
+                        y: wallSize + (brickHeight + brickGap) * row,
+                        color: 'white',
+                        width: brickWidth,
+                        height: brickHeight
+                      });
+                    } else if (rand == 19) {
+                      bonusbricks += 1;
+                      bricks.push({
+                        x: wallSize + (brickWidth + brickGap) * col,
+                        y: wallSize + (brickHeight + brickGap) * row,
+                        color: 'saddlebrown',
+                        width: brickWidth,
+                        height: brickHeight
+                      });
+                    } else if (rand == 0) {
+                      bonusbricks += 1;
+                      bricks.push({
+                        x: wallSize + (brickWidth + brickGap) * col,
+                        y: wallSize + (brickHeight + brickGap) * row,
+                        color: 'magenta',
+                        width: brickWidth,
+                        height: brickHeight
+                      });
+                    } else if (rand == 21) {
+                      bonusbricks += 1;
+                      bricks.push({
+                        x: wallSize + (brickWidth + brickGap) * col,
+                        y: wallSize + (brickHeight + brickGap) * row,
+                        color: 'lime',
+                        width: brickWidth,
+                        height: brickHeight
+                      });
+                    } else if (rand == 42) {
+                      bonusbricks += 1;
+                      bricks.push({
+                        x: wallSize + (brickWidth + brickGap) * col,
+                        y: wallSize + (brickHeight + brickGap) * row,
+                        color: 'maroon',
+                        width: brickWidth,
+                        height: brickHeight
+                      });
+                    } else {
+                      const colorCode = level1[row][col];
+                      bricks.push({
+                        x: wallSize + (brickWidth + brickGap) * col,
+                        y: wallSize + (brickHeight + brickGap) * row,
+                        color: colorMap[colorCode],
+                        width: brickWidth,
+                        height: brickHeight
+                      });
+                    }
+                  } else {
+                    const colorCode = level1[row][col];
+                    bricks.push({
+                      x: wallSize + (brickWidth + brickGap) * col,
+                      y: wallSize + (brickHeight + brickGap) * row,
+                      color: colorMap[colorCode],
+                      width: brickWidth,
+                      height: brickHeight
+                    });
+                  }
+                }
+              }
+            }
           }
-        }
-      }
 
-      if (curlevel == 2) { // рестарт второго уровня (строим его как и раньше)
-        
-        // обнуляем массив кирпичей
-        bricks = [];
+          if (curlevel == 2) { // рестарт второго уровня (строим его как и раньше)
 
-        for (let row = 0; row < level2.length; row++) {
-            for (let col = 0; col < level2[row].length; col++) {
+            // обнуляем массив кирпичей
+            bricks = [];
+
+            for (let row = 0; row < level2.length; row++) {
+              for (let col = 0; col < level2[row].length; col++) {
 
                 if (level2[row][col] != 'E') {
-                    let rand = getRandomInt(50);
-                    if (bonusbricks < 5) {
+                  let rand = getRandomInt(50);
+                  if (bonusbricks < 5) {
                     if (rand == 7) {
-                        bonusbricks += 1;
-            bricks.push({
-                x: wallSize + (brickWidth + brickGap) * col,
-                y: wallSize + (brickHeight + brickGap) * row,
-                color: 'silver',
-                width: brickWidth,
-                height: brickHeight
-        });
-    } else if (rand == 19) {
-        bonusbricks += 1;
-        bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: 'dimgrey',
-          width: brickWidth,
-          height: brickHeight
-        });
-    } else if (rand == 0) {
-        bonusbricks += 1;
-        bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: 'magenta',
-          width: brickWidth,
-          height: brickHeight
-        });
-    } else if (rand == 21) {
-        bonusbricks += 1;
-        bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: 'lime',
-          width: brickWidth,
-          height: brickHeight
-        });
-    } else if (rand == 42) {
-        bonusbricks += 1;
-        bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: 'maroon',
-          width: brickWidth,
-          height: brickHeight
-        });
-    } else {
-        const colorCode = level2[row][col];
-        bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: colorMap[colorCode],
-          width: brickWidth,
-          height: brickHeight
-        });
-        }
-    } else {
-        const colorCode = level2[row][col];
-        bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: colorMap[colorCode],
-          width: brickWidth,
-          height: brickHeight
-        });
-    }
+                      bonusbricks += 1;
+                      bricks.push({
+                        x: wallSize + (brickWidth + brickGap) * col,
+                        y: wallSize + (brickHeight + brickGap) * row,
+                        color: 'silver',
+                        width: brickWidth,
+                        height: brickHeight
+                      });
+                    } else if (rand == 19) {
+                      bonusbricks += 1;
+                      bricks.push({
+                        x: wallSize + (brickWidth + brickGap) * col,
+                        y: wallSize + (brickHeight + brickGap) * row,
+                        color: 'dimgrey',
+                        width: brickWidth,
+                        height: brickHeight
+                      });
+                    } else if (rand == 0) {
+                      bonusbricks += 1;
+                      bricks.push({
+                        x: wallSize + (brickWidth + brickGap) * col,
+                        y: wallSize + (brickHeight + brickGap) * row,
+                        color: 'magenta',
+                        width: brickWidth,
+                        height: brickHeight
+                      });
+                    } else if (rand == 21) {
+                      bonusbricks += 1;
+                      bricks.push({
+                        x: wallSize + (brickWidth + brickGap) * col,
+                        y: wallSize + (brickHeight + brickGap) * row,
+                        color: 'lime',
+                        width: brickWidth,
+                        height: brickHeight
+                      });
+                    } else if (rand == 42) {
+                      bonusbricks += 1;
+                      bricks.push({
+                        x: wallSize + (brickWidth + brickGap) * col,
+                        y: wallSize + (brickHeight + brickGap) * row,
+                        color: 'maroon',
+                        width: brickWidth,
+                        height: brickHeight
+                      });
+                    } else {
+                      const colorCode = level2[row][col];
+                      bricks.push({
+                        x: wallSize + (brickWidth + brickGap) * col,
+                        y: wallSize + (brickHeight + brickGap) * row,
+                        color: colorMap[colorCode],
+                        width: brickWidth,
+                        height: brickHeight
+                      });
+                    }
+                  } else {
+                    const colorCode = level2[row][col];
+                    bricks.push({
+                      x: wallSize + (brickWidth + brickGap) * col,
+                      y: wallSize + (brickHeight + brickGap) * row,
+                      color: colorMap[colorCode],
+                      width: brickWidth,
+                      height: brickHeight
+                    });
+                  }
+                }
               }
             }
           }
-      }
 
-      if (curlevel == 3) { // рестарт третьего уровня (строим его как и раньше)
-       
-        // обнуляем массив кирпичей
-        bricks = [];
+          if (curlevel == 3) { // рестарт третьего уровня (строим его как и раньше)
 
-        for (let row = 0; row < level3.length; row++) {
-            for (let col = 0; col < level3[row].length; col++) {
+            // обнуляем массив кирпичей
+            bricks = [];
+
+            for (let row = 0; row < level3.length; row++) {
+              for (let col = 0; col < level3[row].length; col++) {
 
                 if (level3[row][col] != 'E') {
-                let rand = getRandomInt(50);
-                if (bonusbricks < 5) {
-        if (rand == 7) {
-            bonusbricks += 1;
-            bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: 'lightsalmon',
-          width: brickWidth,
-          height: brickHeight
-        });
-    } else if (rand == 19) {
-        bonusbricks += 1;
-        bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: 'tomato',
-          width: brickWidth,
-          height: brickHeight
-        });
-    } else if (rand == 0) {
-        bonusbricks += 1;
-        bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: 'magenta',
-          width: brickWidth,
-          height: brickHeight
-        });
-    } else if (rand == 21) {
-        bonusbricks += 1;
-        bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: 'lime',
-          width: brickWidth,
-          height: brickHeight
-        });
-    } else if (rand == 42) {
-        bonusbricks += 1;
-        bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: 'maroon',
-          width: brickWidth,
-          height: brickHeight
-        });
-    } else {
-        const colorCode = level3[row][col];
-        bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: colorMap[colorCode],
-          width: brickWidth,
-          height: brickHeight
-        });
-        }
-    } else {
-        const colorCode = level3[row][col];
-        bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: colorMap[colorCode],
-          width: brickWidth,
-          height: brickHeight
-        });
-    }
+                  let rand = getRandomInt(50);
+                  if (bonusbricks < 5) {
+                    if (rand == 7) {
+                      bonusbricks += 1;
+                      bricks.push({
+                        x: wallSize + (brickWidth + brickGap) * col,
+                        y: wallSize + (brickHeight + brickGap) * row,
+                        color: 'lightsalmon',
+                        width: brickWidth,
+                        height: brickHeight
+                      });
+                    } else if (rand == 19) {
+                      bonusbricks += 1;
+                      bricks.push({
+                        x: wallSize + (brickWidth + brickGap) * col,
+                        y: wallSize + (brickHeight + brickGap) * row,
+                        color: 'tomato',
+                        width: brickWidth,
+                        height: brickHeight
+                      });
+                    } else if (rand == 0) {
+                      bonusbricks += 1;
+                      bricks.push({
+                        x: wallSize + (brickWidth + brickGap) * col,
+                        y: wallSize + (brickHeight + brickGap) * row,
+                        color: 'magenta',
+                        width: brickWidth,
+                        height: brickHeight
+                      });
+                    } else if (rand == 21) {
+                      bonusbricks += 1;
+                      bricks.push({
+                        x: wallSize + (brickWidth + brickGap) * col,
+                        y: wallSize + (brickHeight + brickGap) * row,
+                        color: 'lime',
+                        width: brickWidth,
+                        height: brickHeight
+                      });
+                    } else if (rand == 42) {
+                      bonusbricks += 1;
+                      bricks.push({
+                        x: wallSize + (brickWidth + brickGap) * col,
+                        y: wallSize + (brickHeight + brickGap) * row,
+                        color: 'maroon',
+                        width: brickWidth,
+                        height: brickHeight
+                      });
+                    } else {
+                      const colorCode = level3[row][col];
+                      bricks.push({
+                        x: wallSize + (brickWidth + brickGap) * col,
+                        y: wallSize + (brickHeight + brickGap) * row,
+                        color: colorMap[colorCode],
+                        width: brickWidth,
+                        height: brickHeight
+                      });
+                    }
+                  } else {
+                    const colorCode = level3[row][col];
+                    bricks.push({
+                      x: wallSize + (brickWidth + brickGap) * col,
+                      y: wallSize + (brickHeight + brickGap) * row,
+                      color: colorMap[colorCode],
+                      width: brickWidth,
+                      height: brickHeight
+                    });
+                  }
+                }
               }
             }
           }
-      }
 
-      if (curlevel == 4) { // рестарт четвертого уровня (строим его как и раньше)
+          if (curlevel == 4) { // рестарт четвертого уровня (строим его как и раньше)
 
             // подгоняем статы для четвертого уровня
             brickWidth = 20;
@@ -1034,175 +1218,175 @@ function game() {
             bricks = [];
 
             for (let row = 0; row < level4.length; row++) {
-            for (let col = 0; col < level4[row].length; col++) {
+              for (let col = 0; col < level4[row].length; col++) {
 
-              if (level4[row][col] != 'E') {
-                let rand = getRandomInt(50);
-                if (bonusbricks < 5) {
-        if (rand == 7) {
-            bonusbricks += 1;
-            bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: 'white',
-          width: brickWidth,
-          height: brickHeight
-        });
-    } else if (rand == 19) {
-        bonusbricks += 1;
-        bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: 'saddlebrown',
-          width: brickWidth,
-          height: brickHeight
-        });
-    } else if (rand == 0) {
-        bonusbricks += 1;
-        bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: 'magenta',
-          width: brickWidth,
-          height: brickHeight
-        });
-    } else if (rand == 21) {
-        bonusbricks += 1;
-        bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: 'lime',
-          width: brickWidth,
-          height: brickHeight
-        });
-    } else if (rand == 42) {
-        bonusbricks += 1;
-        bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: 'maroon',
-          width: brickWidth,
-          height: brickHeight
-        });
-    } else {
-        const colorCode = level4[row][col];
-        bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: colorMap[colorCode],
-          width: brickWidth,
-          height: brickHeight
-        });
-        }
-    } else {
-        const colorCode = level4[row][col];
-        bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: colorMap[colorCode],
-          width: brickWidth,
-          height: brickHeight
-        });
-    }
+                if (level4[row][col] != 'E') {
+                  let rand = getRandomInt(50);
+                  if (bonusbricks < 5) {
+                    if (rand == 7) {
+                      bonusbricks += 1;
+                      bricks.push({
+                        x: wallSize + (brickWidth + brickGap) * col,
+                        y: wallSize + (brickHeight + brickGap) * row,
+                        color: 'white',
+                        width: brickWidth,
+                        height: brickHeight
+                      });
+                    } else if (rand == 19) {
+                      bonusbricks += 1;
+                      bricks.push({
+                        x: wallSize + (brickWidth + brickGap) * col,
+                        y: wallSize + (brickHeight + brickGap) * row,
+                        color: 'saddlebrown',
+                        width: brickWidth,
+                        height: brickHeight
+                      });
+                    } else if (rand == 0) {
+                      bonusbricks += 1;
+                      bricks.push({
+                        x: wallSize + (brickWidth + brickGap) * col,
+                        y: wallSize + (brickHeight + brickGap) * row,
+                        color: 'magenta',
+                        width: brickWidth,
+                        height: brickHeight
+                      });
+                    } else if (rand == 21) {
+                      bonusbricks += 1;
+                      bricks.push({
+                        x: wallSize + (brickWidth + brickGap) * col,
+                        y: wallSize + (brickHeight + brickGap) * row,
+                        color: 'lime',
+                        width: brickWidth,
+                        height: brickHeight
+                      });
+                    } else if (rand == 42) {
+                      bonusbricks += 1;
+                      bricks.push({
+                        x: wallSize + (brickWidth + brickGap) * col,
+                        y: wallSize + (brickHeight + brickGap) * row,
+                        color: 'maroon',
+                        width: brickWidth,
+                        height: brickHeight
+                      });
+                    } else {
+                      const colorCode = level4[row][col];
+                      bricks.push({
+                        x: wallSize + (brickWidth + brickGap) * col,
+                        y: wallSize + (brickHeight + brickGap) * row,
+                        color: colorMap[colorCode],
+                        width: brickWidth,
+                        height: brickHeight
+                      });
+                    }
+                  } else {
+                    const colorCode = level4[row][col];
+                    bricks.push({
+                      x: wallSize + (brickWidth + brickGap) * col,
+                      y: wallSize + (brickHeight + brickGap) * row,
+                      color: colorMap[colorCode],
+                      width: brickWidth,
+                      height: brickHeight
+                    });
+                  }
+                }
               }
             }
           }
-      }
-      if (curlevel == 5) { // рестарт пятого уровня (строим его как и раньше)
+          if (curlevel == 5) { // рестарт пятого уровня (строим его как и раньше)
 
-        // обнуляем массив кирпичей
-        bricks = [];
+            // обнуляем массив кирпичей
+            bricks = [];
 
-        for (let row = 0; row < level5.length; row++) {
-            for (let col = 0; col < level5[row].length; col++) {
+            for (let row = 0; row < level5.length; row++) {
+              for (let col = 0; col < level5[row].length; col++) {
 
-              if (level5[row][col] != 'E') {
-                let rand = getRandomInt(50);
-                if (bonusbricks < 5) {
-        if (rand == 7) {
-            bonusbricks += 1;
-            bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: 'white',
-          width: brickWidth,
-          height: brickHeight
-        });
-    } else if (rand == 19) {
-        bonusbricks += 1;
-        bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: 'saddlebrown',
-          width: brickWidth,
-          height: brickHeight
-        });
-    } else if (rand == 0) {
-        bonusbricks += 1;
-        bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: 'magenta',
-          width: brickWidth,
-          height: brickHeight
-        });
-    } else if (rand == 21) {
-        bonusbricks += 1;
-        bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: 'lime',
-          width: brickWidth,
-          height: brickHeight
-        });
-    } else if (rand == 42) {
-        bonusbricks += 1;
-        bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: 'maroon',
-          width: brickWidth,
-          height: brickHeight
-        });
-    } else {
-        const colorCode = level5[row][col];
-        bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: colorMap[colorCode],
-          width: brickWidth,
-          height: brickHeight
-        });
-        }
-    } else {
-        const colorCode = level5[row][col];
-        bricks.push({
-          x: wallSize + (brickWidth + brickGap) * col,
-          y: wallSize + (brickHeight + brickGap) * row,
-          color: colorMap[colorCode],
-          width: brickWidth,
-          height: brickHeight
-        });  
-    }
+                if (level5[row][col] != 'E') {
+                  let rand = getRandomInt(50);
+                  if (bonusbricks < 5) {
+                    if (rand == 7) {
+                      bonusbricks += 1;
+                      bricks.push({
+                        x: wallSize + (brickWidth + brickGap) * col,
+                        y: wallSize + (brickHeight + brickGap) * row,
+                        color: 'white',
+                        width: brickWidth,
+                        height: brickHeight
+                      });
+                    } else if (rand == 19) {
+                      bonusbricks += 1;
+                      bricks.push({
+                        x: wallSize + (brickWidth + brickGap) * col,
+                        y: wallSize + (brickHeight + brickGap) * row,
+                        color: 'saddlebrown',
+                        width: brickWidth,
+                        height: brickHeight
+                      });
+                    } else if (rand == 0) {
+                      bonusbricks += 1;
+                      bricks.push({
+                        x: wallSize + (brickWidth + brickGap) * col,
+                        y: wallSize + (brickHeight + brickGap) * row,
+                        color: 'magenta',
+                        width: brickWidth,
+                        height: brickHeight
+                      });
+                    } else if (rand == 21) {
+                      bonusbricks += 1;
+                      bricks.push({
+                        x: wallSize + (brickWidth + brickGap) * col,
+                        y: wallSize + (brickHeight + brickGap) * row,
+                        color: 'lime',
+                        width: brickWidth,
+                        height: brickHeight
+                      });
+                    } else if (rand == 42) {
+                      bonusbricks += 1;
+                      bricks.push({
+                        x: wallSize + (brickWidth + brickGap) * col,
+                        y: wallSize + (brickHeight + brickGap) * row,
+                        color: 'maroon',
+                        width: brickWidth,
+                        height: brickHeight
+                      });
+                    } else {
+                      const colorCode = level5[row][col];
+                      bricks.push({
+                        x: wallSize + (brickWidth + brickGap) * col,
+                        y: wallSize + (brickHeight + brickGap) * row,
+                        color: colorMap[colorCode],
+                        width: brickWidth,
+                        height: brickHeight
+                      });
+                    }
+                  } else {
+                    const colorCode = level5[row][col];
+                    bricks.push({
+                      x: wallSize + (brickWidth + brickGap) * col,
+                      y: wallSize + (brickHeight + brickGap) * row,
+                      color: colorMap[colorCode],
+                      width: brickWidth,
+                      height: brickHeight
+                    });
+                  }
+                }
               }
             }
           }
+
+          // телепортируем платформу в центр
+          paddle.x = canvas.width / 2 - brickWidth;
+          paddle.y = 440;
+        } else {
+          extralives -= 1;
+        }
+
+        // телепортируем шарик к платформе
+        ball.dx = 0;
+        ball.dy = 0;
       }
 
-      // телепортируем платформу в центр
-      paddle.x = canvas.width / 2 - brickWidth;
-      paddle.y = 440;
-    } else {
-        extralives -= 1;
-    }
-
-    // телепортируем шарик к платформе
-    ball.dx = 0;
-      ball.dy = 0;
-}
 
 
-   
       // рисуем стены
       context.fillStyle = 'lightgrey';
       context.fillRect(0, 0, canvas.width, wallSize);
@@ -1210,7 +1394,7 @@ function game() {
       context.fillRect(canvas.width - wallSize, 0, wallSize, canvas.height);
 
       // рисуем кирпичи
-      bricks.forEach(function(brick) {
+      bricks.forEach(function (brick) {
         context.fillStyle = brick.color;
         context.fillRect(brick.x, brick.y, brick.width, brick.height);
       });
@@ -1228,12 +1412,12 @@ function game() {
       }
 
       // рисуем шарик
-    var circle = new Path2D();
-    circle.arc(ball.x + ball.width / 2, ball.y + ball.height / 2, ball.width * 0.5, 0, 2 * Math.PI);
-    context.fill(circle);
+      var circle = new Path2D();
+      circle.arc(ball.x + ball.width / 2, ball.y + ball.height / 2, ball.width * 0.5, 0, 2 * Math.PI);
+      context.fill(circle);
 
-    // двигаем шарик
-    ball.x += ball.dx;
+      // двигаем шарик
+      ball.x += ball.dx;
       ball.y += ball.dy;
 
       // ограничиваем скорость шарика по оси игрек
@@ -1251,26 +1435,26 @@ function game() {
 
         // параллельно находим самый низ уровня
         if (brick.y > bottom) {
-            bottom = brick.y;
+          bottom = brick.y;
         }
         if (collides(ball, brick)) {
-        if (brick.color == 'white' || brick.color == 'silver' || brick.color == 'lightsalmon') // увеличение размера платформы
-        {
+          if (brick.color == 'white' || brick.color == 'silver' || brick.color == 'lightsalmon') // увеличение размера платформы
+          {
             if (paddle.width < 100) {
-            paddle.width *= 1.5;
+              paddle.width *= 1.5;
             }
-        } else if (brick.color == 'saddlebrown' || brick.color == 'dimgrey' || brick.color == 'tomato') { // увеличение скорости шарика
+          } else if (brick.color == 'saddlebrown' || brick.color == 'dimgrey' || brick.color == 'tomato') { // увеличение скорости шарика
             ball.dx *= 1.3;
             ball.dy *= 1.3;
-        } else if (brick.color == 'magenta') { // дополнительная жизнь
+          } else if (brick.color == 'magenta') { // дополнительная жизнь
             extralives += 1;
-        } else if (brick.color == 'lime') { // замедление шарика
+          } else if (brick.color == 'lime') { // замедление шарика
             ball.dx /= 1.3;
             ball.dy /= 1.3;
-        } else if (brick.color == 'maroon') { // второй шарик
+          } else if (brick.color == 'maroon') { // второй шарик
             twoballs = true;
             secondball.y = paddle.y - paddle.height / 2;
-        }
+          }
           // убираем кирпич из массива
           bricks.splice(i, 1);
           // если шарик коснулся кирпича сверху или снизу — меняем направление движения шарика по оси игрек
@@ -1306,24 +1490,24 @@ function game() {
 
 
 
-    // РАБОТА СО ВТОРЫМ ШАРИКОМ  
+      // РАБОТА СО ВТОРЫМ ШАРИКОМ  
 
-    // лепим второй шарик к платформе, если его скорость равна нулю и он вообще существует
-    if (twoballs == true) {
-      if (secondball.dx == 0 && secondball.dy == 0) {
-        secondball.x = paddle.x + paddle.width / 2 - secondball.width / 2;
-        secondball.y = paddle.y - paddle.height / 2;
+      // лепим второй шарик к платформе, если его скорость равна нулю и он вообще существует
+      if (twoballs == true) {
+        if (secondball.dx == 0 && secondball.dy == 0) {
+          secondball.x = paddle.x + paddle.width / 2 - secondball.width / 2;
+          secondball.y = paddle.y - paddle.height / 2;
+        }
+
+        // рисуем второй шарик
+        context.fillStyle = 'red';
+        var secondcircle = new Path2D();
+        secondcircle.arc(secondball.x + secondball.width / 2, secondball.y + secondball.height / 2, secondball.width * 0.5, 0, 2 * Math.PI);
+        context.fill(secondcircle);
       }
 
-      // рисуем второй шарик
-      context.fillStyle = 'red';
-      var secondcircle = new Path2D();
-    secondcircle.arc(secondball.x + secondball.width / 2, secondball.y + secondball.height / 2, secondball.width * 0.5, 0, 2 * Math.PI);
-    context.fill(secondcircle);
-    }
-
-    // двигаем второй шарик, если он существует
-    if (twoballs == true) {
+      // двигаем второй шарик, если он существует
+      if (twoballs == true) {
         secondball.x += secondball.dx;
         secondball.y += secondball.dy;
       }
@@ -1338,38 +1522,36 @@ function game() {
 
       // аналогичная проверка коллизии с кирпичами для второго шарика в случае его существования
       if (twoballs == true) {
-      for (let i = 0; i < bricks.length; i++) {
-        const brick = bricks[i];
-        if (collides(secondball, brick)) {
-        if (brick.color == 'white' || brick.color == 'silver' || brick.color == 'lightsalmon') 
-        {
-            if (paddle.width < 100) {
-            paddle.width *= 1.5;
+        for (let i = 0; i < bricks.length; i++) {
+          const brick = bricks[i];
+          if (collides(secondball, brick)) {
+            if (brick.color == 'white' || brick.color == 'silver' || brick.color == 'lightsalmon') {
+              if (paddle.width < 100) {
+                paddle.width *= 1.5;
+              }
+            } else if (brick.color == 'saddlebrown' || brick.color == 'dimgrey' || brick.color == 'tomato') {
+              secondball.dx *= 1.3;
+              secondball.dy *= 1.3;
+            } else if (brick.color == 'magenta') {
+              extralives += 1;
+            } else if (brick.color == 'lime') {
+              secondball.dx /= 1.3;
+              secondball.dy /= 1.3;
             }
-        } else if (brick.color == 'saddlebrown' || brick.color == 'dimgrey' || brick.color == 'tomato') {
-            secondball.dx *= 1.3;
-            secondball.dy *= 1.3;
-        } else if (brick.color == 'magenta') { 
-            extralives += 1;
-        } else if (brick.color == 'lime') {
-            secondball.dx /= 1.3;
-            secondball.dy /= 1.3;
-        }
-          bricks.splice(i, 1);
-          if (secondball.y + secondball.height - secondball.speed <= brick.y ||
-            secondball.y >= brick.y + brick.height - secondball.speed) {
-            secondball.dy *= -1;
+            bricks.splice(i, 1);
+            if (secondball.y + secondball.height - secondball.speed <= brick.y ||
+              secondball.y >= brick.y + brick.height - secondball.speed) {
+              secondball.dy *= -1;
+            } else {
+              secondball.dx *= -1;
+            }
+            break;
           }
-          else {
-            secondball.dx *= -1;
-          }
-          break;
         }
       }
-    }
 
-    // проверка второго шарика на коллизию с боковыми стенками,если он существует 
-    if (twoballs == true && secondball.x < wallSize) {
+      // проверка второго шарика на коллизию с боковыми стенками,если он существует 
+      if (twoballs == true && secondball.x < wallSize) {
         secondball.x = wallSize;
         secondball.dx *= -1;
       } else if (twoballs == true && secondball.x + secondball.width > canvas.width - wallSize) {
@@ -1391,13 +1573,13 @@ function game() {
       }
 
 
-    
 
 
-    // РАБОТА С ПЛАТФОРМОЙ
 
-     // рисуем платформу
-     context.fillStyle = 'cyan';
+      // РАБОТА С ПЛАТФОРМОЙ
+
+      // рисуем платформу
+      context.fillStyle = 'cyan';
       context.fillRect(paddle.x, paddle.y, paddle.width, paddle.height);
 
       // двигаем платформу с нужной скоростью 
@@ -1426,32 +1608,32 @@ function game() {
       // проверка коллизии шарика с платформой
       if (collides(ball, paddle)) {
         if (ball.x < paddle.x || ball.x + ball.width > paddle.x + paddle.width) { // касание сбоку
-            ball.dx *= -1;
-            ball.dx += paddle.dx / 2;
-            ball.x += ball.dx;
-            ball.y += ball.dy;
-          } else { // касание сверху
-            ball.dx += paddle.dx / 2;
-        ball.dy *= -1;
-        ball.dy += paddle.dy;
-        // сдвигаем шарик выше платформы, чтобы на следующем кадре это снова не засчиталось за столкновение
-        ball.y = paddle.y - ball.height;
-          }
+          ball.dx *= -1;
+          ball.dx += paddle.dx / 2;
+          ball.x += ball.dx;
+          ball.y += ball.dy;
+        } else { // касание сверху
+          ball.dx += paddle.dx / 2;
+          ball.dy *= -1;
+          ball.dy += paddle.dy;
+          // сдвигаем шарик выше платформы, чтобы на следующем кадре это снова не засчиталось за столкновение
+          ball.y = paddle.y - ball.height;
+        }
       }
 
       // проверка коллизии второго шарика с платформой в случае его существования
       if (twoballs == true && collides(secondball, paddle)) {
         if (secondball.x < paddle.x || secondball.x + secondball.width > paddle.x + paddle.width) {
-            secondball.dx *= -1;
-            secondball.dx += secondball.dx / 2;
-            secondball.x += ball.dx;
-            secondball.y += secondball.dy;
-          } else {
-            secondball.dx += paddle.dx / 2;
-            secondball.dy *= -1;
-            secondball.dy += paddle.dy;
-        secondball.y = paddle.y - secondball.height;
-          }
+          secondball.dx *= -1;
+          secondball.dx += secondball.dx / 2;
+          secondball.x += ball.dx;
+          secondball.y += secondball.dy;
+        } else {
+          secondball.dx += paddle.dx / 2;
+          secondball.dy *= -1;
+          secondball.dy += paddle.dy;
+          secondball.y = paddle.y - secondball.height;
+        }
       }
     }
 
@@ -1482,7 +1664,7 @@ function game() {
       context.fillRect(canvas.width - wallSize, 0, wallSize, canvas.height);
 
       // рисуем кирпичи
-      bricks.forEach(function(brick) {
+      bricks.forEach(function (brick) {
         context.fillStyle = brick.color;
         context.fillRect(brick.x, brick.y, brick.width, brick.height);
       });
@@ -1520,12 +1702,12 @@ function game() {
       }
 
       // рисуем шарик
-    var circle = new Path2D();
-    circle.arc(ball.x + ball.width / 2, ball.y + ball.height / 2, ball.width * 0.5, 0, 2 * Math.PI);
-    context.fill(circle);
+      var circle = new Path2D();
+      circle.arc(ball.x + ball.width / 2, ball.y + ball.height / 2, ball.width * 0.5, 0, 2 * Math.PI);
+      context.fill(circle);
 
-    // двигаем шарик
-    ball.x += ball.dx;
+      // двигаем шарик
+      ball.x += ball.dx;
       ball.y += ball.dy;
 
       // ограничиваем скорость шарика по оси игрек
@@ -1543,26 +1725,26 @@ function game() {
 
         // параллельно находим самый низ уровня
         if (brick.y > bottom) {
-            bottom = brick.y;
+          bottom = brick.y;
         }
         if (collides(ball, brick)) {
-        if (brick.color == 'white') // увеличение размера платформы
-        {
+          if (brick.color == 'white') // увеличение размера платформы
+          {
             if (paddle.width < 100) {
-            paddle.width *= 1.5;
+              paddle.width *= 1.5;
             }
-        } else if (brick.color == 'saddlebrown') { // увеличение скорости шарика
+          } else if (brick.color == 'saddlebrown') { // увеличение скорости шарика
             ball.dx *= 1.3;
             ball.dy *= 1.3;
-        } else if (brick.color == 'magenta') { // дополнительная жизнь
+          } else if (brick.color == 'magenta') { // дополнительная жизнь
             extralives += 1;
-        } else if (brick.color == 'lime') { // замедление шарика
+          } else if (brick.color == 'lime') { // замедление шарика
             ball.dx /= 1.3;
             ball.dy /= 1.3;
-        } else if (brick.color == 'maroon') { // второй шарик
+          } else if (brick.color == 'maroon') { // второй шарик
             twoballs = true;
             secondball.y = paddle.y - paddle.height / 2;
-        }
+          }
           // убираем кирпич из массива
           bricks.splice(i, 1);
           // если шарик коснулся кирпича сверху или снизу — меняем направление движения шарика по оси игрек
@@ -1600,11 +1782,11 @@ function game() {
         secondball.dx = 0;
         secondball.dy = 0;
         if (extralives > 0) {
-            extralives -= 1;
+          extralives -= 1;
         } else {
-            bricks = [];
-            paddle.x = canvas.width / 2 - brickWidth;
-            paddle.y  = 440;
+          bricks = [];
+          paddle.x = canvas.width / 2 - brickWidth;
+          paddle.y = 440;
         }
         ball.dx = 0;
         ball.dy = 0;
@@ -1614,24 +1796,24 @@ function game() {
 
 
 
-    // РАБОТА СО ВТОРЫМ ШАРИКОМ  
+      // РАБОТА СО ВТОРЫМ ШАРИКОМ  
 
-    // лепим второй шарик к платформе, если его скорость равна нулю и он вообще существует
-    if (twoballs == true) {
-      if (secondball.dx == 0 && secondball.dy == 0) {
-        secondball.x = paddle.x + paddle.width / 2 - secondball.width / 2;
-        secondball.y = paddle.y - paddle.height / 2;
+      // лепим второй шарик к платформе, если его скорость равна нулю и он вообще существует
+      if (twoballs == true) {
+        if (secondball.dx == 0 && secondball.dy == 0) {
+          secondball.x = paddle.x + paddle.width / 2 - secondball.width / 2;
+          secondball.y = paddle.y - paddle.height / 2;
+        }
+
+        // рисуем второй шарик
+        context.fillStyle = 'red';
+        var secondcircle = new Path2D();
+        secondcircle.arc(secondball.x + secondball.width / 2, secondball.y + secondball.height / 2, secondball.width * 0.5, 0, 2 * Math.PI);
+        context.fill(secondcircle);
       }
 
-      // рисуем второй шарик
-      context.fillStyle = 'red';
-      var secondcircle = new Path2D();
-    secondcircle.arc(secondball.x + secondball.width / 2, secondball.y + secondball.height / 2, secondball.width * 0.5, 0, 2 * Math.PI);
-    context.fill(secondcircle);
-    }
-
-    // двигаем второй шарик, если он существует
-    if (twoballs == true) {
+      // двигаем второй шарик, если он существует
+      if (twoballs == true) {
         secondball.x += secondball.dx;
         secondball.y += secondball.dy;
       }
@@ -1646,38 +1828,36 @@ function game() {
 
       // аналогичная проверка коллизии с кирпичами для второго шарика в случае его существования
       if (twoballs == true) {
-      for (let i = 0; i < bricks.length; i++) {
-        const brick = bricks[i];
-        if (collides(secondball, brick)) {
-        if (brick.color == 'white') 
-        {
-            if (paddle.width < 100) {
-            paddle.width *= 1.5;
+        for (let i = 0; i < bricks.length; i++) {
+          const brick = bricks[i];
+          if (collides(secondball, brick)) {
+            if (brick.color == 'white') {
+              if (paddle.width < 100) {
+                paddle.width *= 1.5;
+              }
+            } else if (brick.color == 'saddlebrown') {
+              secondball.dx *= 1.3;
+              secondball.dy *= 1.3;
+            } else if (brick.color == 'magenta') {
+              extralives += 1;
+            } else if (brick.color == 'lime') {
+              secondball.dx /= 1.3;
+              secondball.dy /= 1.3;
             }
-        } else if (brick.color == 'saddlebrown') {
-            secondball.dx *= 1.3;
-            secondball.dy *= 1.3;
-        } else if (brick.color == 'magenta') { 
-            extralives += 1;
-        } else if (brick.color == 'lime') {
-            secondball.dx /= 1.3;
-            secondball.dy /= 1.3;
-        }
-          bricks.splice(i, 1);
-          if (secondball.y + secondball.height - secondball.speed <= brick.y ||
-            secondball.y >= brick.y + brick.height - secondball.speed) {
-            secondball.dy *= -1;
+            bricks.splice(i, 1);
+            if (secondball.y + secondball.height - secondball.speed <= brick.y ||
+              secondball.y >= brick.y + brick.height - secondball.speed) {
+              secondball.dy *= -1;
+            } else {
+              secondball.dx *= -1;
+            }
+            break;
           }
-          else {
-            secondball.dx *= -1;
-          }
-          break;
         }
       }
-    }
 
-    // проверка второго шарика на коллизию с боковыми стенками,если он существует 
-    if (twoballs == true && secondball.x < wallSize) {
+      // проверка второго шарика на коллизию с боковыми стенками,если он существует 
+      if (twoballs == true && secondball.x < wallSize) {
         secondball.x = wallSize;
         secondball.dx *= -1;
       } else if (twoballs == true && secondball.x + secondball.width > canvas.width - wallSize) {
@@ -1699,13 +1879,13 @@ function game() {
       }
 
 
-    
 
 
-    // РАБОТА С ПЛАТФОРМОЙ
 
-     // рисуем платформу
-     context.fillStyle = 'cyan';
+      // РАБОТА С ПЛАТФОРМОЙ
+
+      // рисуем платформу
+      context.fillStyle = 'cyan';
       context.fillRect(paddle.x, paddle.y, paddle.width, paddle.height);
 
       // двигаем платформу с нужной скоростью 
@@ -1734,142 +1914,140 @@ function game() {
       // проверка коллизии шарика с платформой
       if (collides(ball, paddle)) {
         if (ball.x < paddle.x || ball.x + ball.width > paddle.x + paddle.width) { // касание сбоку
-            ball.dx *= -1;
-            ball.dx += paddle.dx / 2;
-            ball.x += ball.dx;
-            ball.y += ball.dy;
-          } else { // касание сверху
-            ball.dx += paddle.dx / 2;
-        ball.dy *= -1;
-        ball.dy += paddle.dy;
-        // сдвигаем шарик выше платформы, чтобы на следующем кадре это снова не засчиталось за столкновение
-        ball.y = paddle.y - ball.height;
-          }
+          ball.dx *= -1;
+          ball.dx += paddle.dx / 2;
+          ball.x += ball.dx;
+          ball.y += ball.dy;
+        } else { // касание сверху
+          ball.dx += paddle.dx / 2;
+          ball.dy *= -1;
+          ball.dy += paddle.dy;
+          // сдвигаем шарик выше платформы, чтобы на следующем кадре это снова не засчиталось за столкновение
+          ball.y = paddle.y - ball.height;
+        }
       }
 
       // проверка коллизии второго шарика с платформой в случае его существования
       if (twoballs == true && collides(secondball, paddle)) {
         if (secondball.x < paddle.x || secondball.x + secondball.width > paddle.x + paddle.width) {
-            secondball.dx *= -1;
-            secondball.dx += secondball.dx / 2;
-            secondball.x += ball.dx;
-            secondball.y += secondball.dy;
-          } else {
-            secondball.dx += paddle.dx / 2;
-            secondball.dy *= -1;
-            secondball.dy += paddle.dy;
-        secondball.y = paddle.y - secondball.height;
-          }
+          secondball.dx *= -1;
+          secondball.dx += secondball.dx / 2;
+          secondball.x += ball.dx;
+          secondball.y += secondball.dy;
+        } else {
+          secondball.dx += paddle.dx / 2;
+          secondball.dy *= -1;
+          secondball.dy += paddle.dy;
+          secondball.y = paddle.y - secondball.height;
+        }
       }
-
     }
 
 
 
 
 
+    // РАБОТАЕМ С ВЫБОРОМ И УСТАНОВКОЙ КИРПИЧЕЙ    
 
-
-
-
-
-// РАБОТАЕМ С ВЫБОРОМ И УСТАНОВКОЙ КИРПИЧЕЙ    
-
-canvas.addEventListener('click', handlerClickCanvas);
-let clientX = 0;
-let clientY = 0;
+    canvas.addEventListener('click', handlerClickCanvas);
+    let clientX = 0;
+    let clientY = 0;
 
     function handlerClickCanvas(e) {
 
+      const div = document.querySelector('#game');
+      const rect = div.getBoundingClientRect();
+
       // делаем так, чтоб нажатие нормально читалось
-  clientX = e.clientX - 5;
-  clientY = e.clientY - 333;
+      clientX = (e.clientX - rect.left) / 1.3;
+      clientY = (e.clientY - rect.top) / 1.3;
 
-  let x = clientX;
-  let y = clientY;
+      let x = clientX;
+      let y = clientY;
 
-  // ставим координаты, подходящие к сетке потенциальных кирпичей
-  clientX = brickGap + wallSize + (clientX - wallSize) - ((clientX - wallSize) % 27);
-  clientY = brickGap + wallSize + (clientY - wallSize) - ((clientY - wallSize) % 14);
+      // ставим координаты, подходящие к сетке потенциальных кирпичей
+      clientX = brickGap + wallSize + (clientX - wallSize) - ((clientX - wallSize) % 27);
+      clientY = brickGap + wallSize + (clientY - wallSize) - ((clientY - wallSize) % 14);
 
-  if (curlevel == 0 && clientY < 410 && clientX < 390) {
-    if (y <= 10 && x >= 42 && x <= 68) { // выбрали коричневый цвет
-        bricks.push({
-          x: clientX,
-          y: clientY,
-          color: 'black',
-          futurecolor: 'saddlebrown',
-          width: brickWidth,
-          height: brickHeight
-        });
-    } else if (y <= 10 && x >= 100 && x <= 126) { // выбрали тёмно-красный цвет
-        bricks.push({
-          x: clientX,
-          y: clientY,
-          color: 'black',
-          futurecolor: 'maroon',
-          width: brickWidth,
-          height: brickHeight
-        });
-    } else if (y <= 10 && x >= 158 && x <= 184) { // выбрали красный цвет
-        bricks.push({
-          x: clientX,
-          y: clientY,
-          color: 'black',
-          futurecolor: 'red',
-          width: brickWidth,
-          height: brickHeight
-        });
-    } else if (y <= 10 && x >= 216 && x <= 242) { // выбрали розовый цвет
-        bricks.push({
-          x: clientX,
-          y: clientY,
-          color: 'black',
-          futurecolor: 'magenta',
-          width: brickWidth,
-          height: brickHeight
-        });
-    } else if (y <= 10 && x >= 274 && x <= 300) { // выбрали светло-зелёный цвет
-        bricks.push({
-          x: clientX,
-          y: clientY,
-          color: 'black',
-          futurecolor: 'lime',
-          width: brickWidth,
-          height: brickHeight
-        });
-    } else if (y <= 10 && x >= 332 && x <= 358) { // выбрали белый цвет
-        bricks.push({
-          x: clientX,
-          y: clientY,
-          color: 'black',
-          futurecolor: 'white',
-          width: brickWidth,
-          height: brickHeight
-        });
-    } else if (bricks.length == 0) { // ставим кирпич, не выбирая цвет
-        bricks.push({
-          x: clientX,
-          y: clientY,
-          color: 'red',
-          width: brickWidth,
-          height: brickHeight
-        });
-    } else if (bricks[bricks.length - 1].color == 'black') { // передвигаем временный кирпич и даём ему выбранный цвет
-        bricks[bricks.length - 1].x = clientX;
-        bricks[bricks.length - 1].y = clientY;
-        bricks[bricks.length - 1].color = bricks[bricks.length - 1].futurecolor;
-    } else { // продолжаем ставить кирпичи уже выбранного цвета
-        bricks.push({
-          x: clientX,
-          y: clientY,
-          color: bricks[bricks.length - 1].color,
-          width: brickWidth,
-          height: brickHeight
-        });
+      if (curlevel == 0 && clientY < 410 && clientX < 390) {
+        if (y <= 10 && x >= 42 && x <= 68) { // выбрали коричневый цвет
+          bricks.push({
+            x: clientX,
+            y: clientY,
+            color: 'black',
+            futurecolor: 'saddlebrown',
+            width: brickWidth,
+            height: brickHeight
+          });
+        } else if (y <= 10 && x >= 100 && x <= 126) { // выбрали тёмно-красный цвет
+          bricks.push({
+            x: clientX,
+            y: clientY,
+            color: 'black',
+            futurecolor: 'maroon',
+            width: brickWidth,
+            height: brickHeight
+          });
+        } else if (y <= 10 && x >= 158 && x <= 184) { // выбрали красный цвет
+          bricks.push({
+            x: clientX,
+            y: clientY,
+            color: 'black',
+            futurecolor: 'red',
+            width: brickWidth,
+            height: brickHeight
+          });
+        } else if (y <= 10 && x >= 216 && x <= 242) { // выбрали розовый цвет
+          bricks.push({
+            x: clientX,
+            y: clientY,
+            color: 'black',
+            futurecolor: 'magenta',
+            width: brickWidth,
+            height: brickHeight
+          });
+        } else if (y <= 10 && x >= 274 && x <= 300) { // выбрали светло-зелёный цвет
+          bricks.push({
+            x: clientX,
+            y: clientY,
+            color: 'black',
+            futurecolor: 'lime',
+            width: brickWidth,
+            height: brickHeight
+          });
+        } else if (y <= 10 && x >= 332 && x <= 358) { // выбрали белый цвет
+          bricks.push({
+            x: clientX,
+            y: clientY,
+            color: 'black',
+            futurecolor: 'white',
+            width: brickWidth,
+            height: brickHeight
+          });
+        } else if (bricks.length == 0) { // ставим кирпич, не выбирая цвет
+          bricks.push({
+            x: clientX,
+            y: clientY,
+            color: 'red',
+            width: brickWidth,
+            height: brickHeight
+          });
+        } else if (bricks[bricks.length - 1].color == 'black') { // передвигаем временный кирпич и даём ему выбранный цвет
+          bricks[bricks.length - 1].x = clientX;
+          bricks[bricks.length - 1].y = clientY;
+          bricks[bricks.length - 1].color = bricks[bricks.length - 1].futurecolor;
+        } else { // продолжаем ставить кирпичи уже выбранного цвета
+          bricks.push({
+            x: clientX,
+            y: clientY,
+            color: bricks[bricks.length - 1].color,
+            width: brickWidth,
+            height: brickHeight
+          });
+        }
+      }
     }
-}
-}
   </script>
 </body>
+
 </html>
