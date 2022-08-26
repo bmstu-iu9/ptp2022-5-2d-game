@@ -66,7 +66,8 @@
 </table>
   <script>
 
-    // добавлен эдитор уровней
+    // нарисованы кирпичи для выбора в эдиторе
+
 
     // ОПИСАНИЕ ПЕРЕМЕННЫХ
 
@@ -1092,6 +1093,7 @@ function game() {
         }
     } else {
         const colorCode = level4[row][col];
+
         bricks.push({
           x: wallSize + (brickWidth + brickGap) * col,
           y: wallSize + (brickHeight + brickGap) * row,
@@ -1099,6 +1101,7 @@ function game() {
           width: brickWidth,
           height: brickHeight
         });
+
     }
               }
             }
@@ -1184,6 +1187,7 @@ function game() {
             }
           }
       }
+
 
       // телепортируем платформу в центр
       paddle.x = canvas.width / 2 - brickWidth;
@@ -1483,6 +1487,26 @@ function game() {
         context.fillRect(brick.x, brick.y, brick.width, brick.height);
       });
 
+      // рисуем кирпичи для выбора 
+      context.fillStyle = 'saddlebrown';
+      context.fillRect(42, 0, 26, 10);
+
+      context.fillStyle = 'maroon';
+      context.fillRect(100, 0, 26, 10);
+
+      context.fillStyle = 'red';
+      context.fillRect(158, 0, 26, 10);
+
+      context.fillStyle = 'magenta';
+      context.fillRect(216, 0, 26, 10);
+
+      context.fillStyle = 'lime';
+      context.fillRect(274, 0, 26, 10);
+
+      context.fillStyle = 'white';
+      context.fillRect(332, 0, 26, 10);
+
+
 
 
 
@@ -1740,6 +1764,44 @@ function game() {
       }
     }
 
+
+
+
+
+
+
+
+
+
+// РАБОТАЕМ С ВЫБОРОМ И УСТАНОВКОЙ КИРПИЧЕЙ    
+
+canvas.addEventListener('click', handlerClickCanvas);
+let clientX = 0;
+let clientY = 0;
+
+    function handlerClickCanvas(e) {
+
+      // делаем так, чтоб нажатие нормально читалось
+  clientX = e.clientX - 5;
+  clientY = e.clientY - 333;
+
+  let x = clientX;
+  let y = clientY;
+
+  // ставим координаты, подходящие к сетке потенциальных кирпичей
+  clientX = brickGap + wallSize + (clientX - wallSize) - ((clientX - wallSize) % 27);
+  clientY = brickGap + wallSize + (clientY - wallSize) - ((clientY - wallSize) % 14);
+
+  if (curlevel == 0 && clientY < 410 && clientX < 390) {
+        bricks.push({
+          x: clientX,
+          y: clientY,
+          color: 'red',
+          width: brickWidth,
+          height: brickHeight
+        });
+}
+}
   </script>
 </body>
 </html>
