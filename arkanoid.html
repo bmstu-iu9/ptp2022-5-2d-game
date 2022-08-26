@@ -68,6 +68,7 @@
 
     // нарисованы кирпичи для выбора в эдиторе
 
+
     // ОПИСАНИЕ ПЕРЕМЕННЫХ
 
     var canvas = document.getElementById('game');
@@ -1092,6 +1093,7 @@ function game() {
         }
     } else {
         const colorCode = level4[row][col];
+
         bricks.push({
           x: wallSize + (brickWidth + brickGap) * col,
           y: wallSize + (brickHeight + brickGap) * row,
@@ -1099,6 +1101,7 @@ function game() {
           width: brickWidth,
           height: brickHeight
         });
+
     }
               }
             }
@@ -1184,6 +1187,7 @@ function game() {
             }
           }
       }
+
 
       // телепортируем платформу в центр
       paddle.x = canvas.width / 2 - brickWidth;
@@ -1501,6 +1505,7 @@ function game() {
 
       context.fillStyle = 'white';
       context.fillRect(332, 0, 26, 10);
+
 
 
 
