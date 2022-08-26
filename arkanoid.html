@@ -271,6 +271,7 @@
     var context = canvas.getContext('2d');
     var curlevel = localStorage.getItem('lvl') == null ? 1 : 0; // уровень, который мы проходим в данный момент ; 0 для эдитора, 1 для нормальной игры (данные подгружаются из localStorage где null = 1, 0 = 0)
     var extralives = 0; // количество жизней
+
     var bonusbricks = 0; // количество кирпичей с бонусами для ограничения
     var bottom = 0; // низ уровня для ограничения движения платформы
 
@@ -519,6 +520,7 @@
               height: brickHeight
             });
           }
+
         }
       }
     }
@@ -597,6 +599,7 @@
 
     function game() {
       requestAnimationFrame(game);
+
 
       // переходим на следующий уровень, если этот зачищен
       if (bricks.length == 0) {
@@ -691,8 +694,10 @@
                     height: brickHeight
                   });
                 }
+
               }
             }
+
           }
 
         } else if (curlevel == 2) { // переход на третий
@@ -772,8 +777,10 @@
                     height: brickHeight
                   });
                 }
+
               }
             }
+
           }
 
         } else if (curlevel == 3) { // переход на четвертый
