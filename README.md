@@ -22,21 +22,21 @@ Kапитан: **Александр Старовойтов**
 Сразу после запуска пользователь может начать игру, нажав  на одну из клавиш 
 
                
-   <kbd>&#8593;</kbd>
-<kbd>&#8592;</kbd> <kbd>&#8594;</kbd> 
+   <kbd>&#5123;</kbd>
+<kbd>&#5130;</kbd> <kbd>&#5125;</kbd> 
 
-или на несколько сразу. Каждая из клавиш двигает платформу в соответстсвии с направлением стрелочки (&#8594; - вправо,
-&#8593 - вверх, &#8592; - влево)
+или на несколько сразу. Каждая из клавиш двигает платформу в соответстсвии с направлением стрелочки (&#5125; - вправо,
+&#5123; - вверх, &#5130; - влево)
 
-Также игрок может двигать платформу вниз, нажимая <kbd>&#8595;</kbd>.
+Также игрок может двигать платформу вниз, нажимая <kbd>&#5121;</kbd>.
 
 
 
 ## Наша команда
 
-Степан **[loonategjr](https://github.com/loonategjr)** Перов — **LEAD** \n
-Дмитрий **[@adderallbaby](https://github.com/adderallbaby)** Куйвашев   \n
-Владимир **[@xexenjoyer](https://github.com/xexenjoyer)** Булкин \n
-Егор **[@pnkvenemy](https://github.com/pnkvenemy)** Панков\n
-Музаффар **[@device0808](https://github.com/device0808)** Исоев \n
-Павел **[@IDEII](https://github.com/IDEII)** Богданов \n
+Степан **[loonategjr](https://github.com/loonategjr)** Перов — **LEAD**   
+Дмитрий **[@adderallbaby](https://github.com/adderallbaby)** Куйвашев    
+Владимир **[@xexenjoyer](https://github.com/xexenjoyer)** Булкин  
+Егор **[@pnkvenemy](https://github.com/pnkvenemy)** Панков  
+Музаффар **[@device0808](https://github.com/device0808)** Исоев  
+Павел **[@IDEII](https://github.com/IDEII)** Богданов  
