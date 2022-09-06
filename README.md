@@ -30,11 +30,15 @@ Kапитан: **Александр Старовойтов**
 
 Также игрок может двигать платформу вниз, нажимая <kbd>&#5121;</kbd>.
 
+## Запуск
 
+<img width="381" alt="Снимок экрана 2022-09-06 в 18 37 36" src="https://user-images.githubusercontent.com/108594932/188677311-b2d6ff2b-3d66-4143-8e20-faf134842f0c.png">
+
+После скачивания папки необходимо запустить файл arkanoid.html
 
 ## Наша команда
 
-Степан **[loonategjr](https://github.com/loonategjr)** Перов — **LEAD**   
+Степан **[@loonategjr](https://github.com/loonategjr)** Перов — **LEAD**   
 Дмитрий **[@adderallbaby](https://github.com/adderallbaby)** Куйвашев    
 Владимир **[@xexenjoyer](https://github.com/xexenjoyer)** Булкин  
 Егор **[@pnkvenemy](https://github.com/pnkvenemy)** Панков  
