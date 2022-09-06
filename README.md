@@ -34,9 +34,9 @@ Kапитан: **Александр Старовойтов**
 
 ## Наша команда
 
-Степан **[loonategjr](https://github.com/loonategjr)** Перов — **LEAD** 
-Дмитрий **[@adderallbaby](https://github.com/adderallbaby)** Куйвашев   
-Владимир **[@xexenjoyer](https://github.com/xexenjoyer)** Булкин 
-Егор **[@pnkvenemy](https://github.com/pnkvenemy)** Панков
-Музаффар **[@device0808](https://github.com/device0808)** Исоев 
-Павел **[@IDEII](https://github.com/IDEII)** Богданов 
+Степан **[loonategjr](https://github.com/loonategjr)** Перов — **LEAD** \n
+Дмитрий **[@adderallbaby](https://github.com/adderallbaby)** Куйвашев   \n
+Владимир **[@xexenjoyer](https://github.com/xexenjoyer)** Булкин \n
+Егор **[@pnkvenemy](https://github.com/pnkvenemy)** Панков\n
+Музаффар **[@device0808](https://github.com/device0808)** Исоев \n
+Павел **[@IDEII](https://github.com/IDEII)** Богданов \n
